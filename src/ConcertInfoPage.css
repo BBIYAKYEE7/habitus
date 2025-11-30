@@ -161,19 +161,20 @@
 
 .sponsors-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
 }
 
 .sponsor-item {
   background: rgba(255, 255, 255, 0.05);
-  padding: 20px;
+  padding: 16px 12px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
   font-weight: 600;
   color: #f2ece4;
   transition: all 0.3s ease;
+  font-size: 14px;
 }
 
 .sponsor-item:hover {
@@ -237,7 +238,8 @@
   }
   
   .sponsors-grid {
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
   }
   
   .performer-card {
