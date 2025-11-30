@@ -1,0 +1,252 @@
+.setlist-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0b0b0b 0%, #1a1a1a 100%);
+  color: #f2ece4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.setlist-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.setlist-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-top: 20px;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background: rgba(226, 87, 45, 0.1);
+  color: #e2572d;
+  text-decoration: none;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 87, 45, 0.3);
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.back-button:hover {
+  background: rgba(226, 87, 45, 0.2);
+  transform: translateY(-2px);
+}
+
+.setlist-header h1 {
+  font-size: 32px;
+  margin: 20px 0;
+  background: linear-gradient(135deg, #e2572d, #ff6b3d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.performance-info {
+  font-size: 16px;
+  color: #b7ab9a;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.setlist-intro {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.setlist-intro h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #f2ece4;
+}
+
+.setlist-intro p {
+  color: #b7ab9a;
+  font-size: 16px;
+}
+
+.part-section {
+  margin-bottom: 40px;
+}
+
+.part-title {
+  font-size: 22px;
+  color: #e2572d;
+  margin-bottom: 20px;
+  text-align: center;
+  background: rgba(226, 87, 45, 0.1);
+  border: 1px solid rgba(226, 87, 45, 0.3);
+  border-radius: 25px;
+  padding: 15px 30px;
+  display: inline-block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.intermission {
+  text-align: center;
+  margin: 50px 0;
+  padding: 30px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+  border-radius: 20px;
+  border: 2px dashed rgba(226, 87, 45, 0.3);
+}
+
+.intermission h3 {
+  font-size: 20px;
+  color: #e2572d;
+  margin: 0 0 10px 0;
+}
+
+.intermission p {
+  color: #b7ab9a;
+  font-size: 15px;
+  margin: 0;
+}
+
+.songs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.song-item {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.song-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.song-number {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #e2572d, #ff6b3d);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.song-details {
+  flex: 1;
+}
+
+.song-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #f2ece4;
+}
+
+.song-artist {
+  font-size: 14px;
+  color: #b7ab9a;
+  margin: 0 0 6px 0;
+}
+
+.song-member {
+  font-size: 14px;
+  color: #e2572d;
+  margin: 0;
+  font-weight: 500;
+}
+
+.song-icon {
+  font-size: 24px;
+  margin-left: 15px;
+  flex-shrink: 0;
+}
+
+.setlist-footer {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.special-note {
+  background: rgba(226, 87, 45, 0.1);
+  border: 1px solid rgba(226, 87, 45, 0.3);
+  border-radius: 15px;
+  padding: 30px;
+}
+
+.special-note h3 {
+  font-size: 20px;
+  margin: 0 0 15px 0;
+  color: #e2572d;
+}
+
+.special-note p {
+  color: #b7ab9a;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .setlist-container {
+    padding: 15px;
+  }
+  
+  .setlist-header h1 {
+    font-size: 24px;
+  }
+  
+  .song-item {
+    padding: 15px;
+  }
+  
+  .song-number {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+    margin-right: 15px;
+  }
+  
+  .song-title {
+    font-size: 16px;
+  }
+  
+  .song-artist,
+  .song-member {
+    font-size: 13px;
+  }
+  
+  .special-note {
+    padding: 20px;
+  }
+  
+  .part-title {
+    font-size: 18px;
+    padding: 12px 20px;
+  }
+  
+  .intermission {
+    padding: 20px;
+    margin: 30px 0;
+  }
+  
+  .intermission h3 {
+    font-size: 18px;
+  }
+  
+  .intermission p {
+    font-size: 14px;
+  }
+}

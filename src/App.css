@@ -137,6 +137,30 @@
   font-weight: 600;
 }
 
+.Hero__concert-button {
+  margin-top: 24px;
+  padding: 14px 28px;
+  background: linear-gradient(135deg, var(--accent), #ff6b3d);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(226, 87, 45, 0.3);
+}
+
+.Hero__concert-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(226, 87, 45, 0.4);
+  background: linear-gradient(135deg, #ff6b3d, var(--accent));
+}
+
+.Hero__concert-button:active {
+  transform: translateY(0);
+}
+
 .Main {
   padding: 0 20px;
   max-width: 960px;

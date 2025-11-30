@@ -1,0 +1,259 @@
+.concert-info-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0b0b0b 0%, #1a1a1a 100%);
+  color: #f2ece4;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.concert-info-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.concert-info-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding-top: 20px;
+}
+
+.back-button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background: rgba(226, 87, 45, 0.1);
+  color: #e2572d;
+  text-decoration: none;
+  border-radius: 20px;
+  border: 1px solid rgba(226, 87, 45, 0.3);
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.back-button:hover {
+  background: rgba(226, 87, 45, 0.2);
+  transform: translateY(-2px);
+}
+
+.concert-info-header h1 {
+  font-size: 32px;
+  margin: 20px 0;
+  background: linear-gradient(135deg, #e2572d, #ff6b3d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.concert-info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.poster-section {
+  text-align: center;
+}
+
+.concert-poster {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+}
+
+.event-details h2,
+.performers-section h2,
+.sponsors-section h2,
+.contact-section h2,
+.notice-section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #e2572d;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.detail-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-label {
+  font-size: 14px;
+  color: #b7ab9a;
+  font-weight: 500;
+}
+
+.detail-value {
+  font-size: 16px;
+  color: #f2ece4;
+  font-weight: 600;
+}
+
+.performers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.performer-card {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.performer-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.performer-avatar {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.performer-card h3 {
+  font-size: 20px;
+  margin: 0 0 8px 0;
+  color: #f2ece4;
+}
+
+.performer-role {
+  display: inline-block;
+  background: linear-gradient(135deg, #e2572d, #ff6b3d);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.performer-card p {
+  color: #b7ab9a;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sponsors-intro {
+  color: #b7ab9a;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
+.sponsors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.sponsor-item {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 20px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-weight: 600;
+  color: #f2ece4;
+  transition: all 0.3s ease;
+}
+
+.sponsor-item:hover {
+  background: rgba(226, 87, 45, 0.1);
+  border-color: rgba(226, 87, 45, 0.3);
+  color: #e2572d;
+}
+
+.contact-info {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-info p {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #f2ece4;
+}
+
+.contact-info p:last-child {
+  margin-bottom: 0;
+}
+
+.notice-list {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 25px 25px 25px 45px;
+  border-radius: 15px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 0;
+}
+
+.notice-list li {
+  color: #b7ab9a;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.notice-list li:last-child {
+  margin-bottom: 0;
+}
+
+/* 모바일 대응 */
+@media (max-width: 768px) {
+  .concert-info-container {
+    padding: 15px;
+  }
+  
+  .concert-info-header h1 {
+    font-size: 24px;
+  }
+  
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .performers-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .sponsors-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  
+  .performer-card {
+    padding: 20px;
+  }
+  
+  .performer-avatar {
+    font-size: 40px;
+  }
+  
+  .contact-info,
+  .notice-list {
+    padding: 20px;
+  }
+  
+  .notice-list {
+    padding-left: 35px;
+  }
+}
