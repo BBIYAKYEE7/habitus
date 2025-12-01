@@ -132,7 +132,7 @@ const SetlistPage = () => {
     { 
       song: "난춘", 
       artist: "새소년",
-      members: "V.김하영 G.김경렬 B.김하영 D.김재민 K.김동현",
+      members: "V.김하영 G.김경렬 B.김하영 D.김재연 K.김동현",
       albumImage: nanchunImg,
     },
     { 
