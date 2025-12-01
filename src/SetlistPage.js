@@ -331,7 +331,6 @@ const SetlistPage = () => {
                 }}
               >
                 <div className="thumbnail-overlay">
-                  <div className="thumbnail-icon">{song.albumImage ? '' : song.icon}</div>
                   <div className="thumbnail-info">
                     <span className="thumbnail-number">{index + 1}</span>
                     <span className="thumbnail-title">{song.song}</span>
