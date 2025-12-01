@@ -23,6 +23,9 @@ const SetlistPage = () => {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [timeLeft, setTimeLeft] = useState('');
+  const [slideDirection, setSlideDirection] = useState('');
+  const [isSongLoading, setIsSongLoading] = useState(false);
+  const [showThumbnailAnimation, setShowThumbnailAnimation] = useState(false);
 
   // 공연 날짜 설정 (2025년 12월 3일 20:30)
   const concertDate = new Date('2025-12-03T20:30:00+09:00');
@@ -169,10 +172,13 @@ const SetlistPage = () => {
 
   const handleSongSelect = (index) => {
     if (index !== currentSongIndex) {
-      setIsTransitioning(true);
+      // 메인 앨범 정보 로딩 애니메이션 적용
+      setIsSongLoading(true);
       setTimeout(() => {
         setCurrentSongIndex(index);
-        setIsTransitioning(false);
+        setTimeout(() => {
+          setIsSongLoading(false);
+        }, 150);
       }, 300);
     }
   };
@@ -181,12 +187,16 @@ const SetlistPage = () => {
     if (currentSongIndex > 0) {
       handleSongSelect(currentSongIndex - 1);
     } else if (selectedSide === 'B') {
-      // B-side 첫 곡에서 이전 버튼 누르면 A-side 마지막 곡으로
+      // B-side 첫 곡에서 이전 버튼 누르면 A-side 마지막 곡으로 (로딩 없음)
+      setSlideDirection('slide-right');
       setIsTransitioning(true);
       setTimeout(() => {
         setSelectedSide('A');
         setCurrentSongIndex(setlistPart1.length - 1);
         setIsTransitioning(false);
+        setSlideDirection('');
+        setShowThumbnailAnimation(true);
+        setTimeout(() => setShowThumbnailAnimation(false), 2000);
       }, 300);
     }
   };
@@ -195,23 +205,33 @@ const SetlistPage = () => {
     if (currentSongIndex < currentPlaylist.length - 1) {
       handleSongSelect(currentSongIndex + 1);
     } else if (selectedSide === 'A') {
-      // A-side 마지막 곡에서 다음 버튼 누르면 B-side 첫 곡으로
+      // A-side 마지막 곡에서 다음 버튼 누르면 B-side 첫 곡으로 (로딩 없음)
+      setSlideDirection('slide-left');
       setIsTransitioning(true);
       setTimeout(() => {
         setSelectedSide('B');
         setCurrentSongIndex(0);
         setIsTransitioning(false);
+        setSlideDirection('');
+        setShowThumbnailAnimation(true);
+        setTimeout(() => setShowThumbnailAnimation(false), 2000);
       }, 300);
     }
   };
 
   const handleSideChange = (side) => {
     if (side !== selectedSide) {
+      // A에서 B로: 왼쪽으로 슬라이드, B에서 A로: 오른쪽으로 슬라이드 (로딩 없음)
+      const direction = selectedSide === 'A' && side === 'B' ? 'slide-left' : 'slide-right';
+      setSlideDirection(direction);
       setIsTransitioning(true);
       setTimeout(() => {
         setSelectedSide(side);
         setCurrentSongIndex(0);
         setIsTransitioning(false);
+        setSlideDirection('');
+        setShowThumbnailAnimation(true);
+        setTimeout(() => setShowThumbnailAnimation(false), 2000);
       }, 300);
     }
   };
@@ -232,44 +252,49 @@ const SetlistPage = () => {
 
         {/* Side 선택 탭 */}
         <div className="side-tabs">
-          <button 
-            className={`side-tab ${selectedSide === 'A' ? 'active' : ''}`}
-            onClick={() => handleSideChange('A')}
-          >
-            🎵 A-side (7곡)
-          </button>
-          <button 
-            className={`side-tab ${selectedSide === 'B' ? 'active' : ''}`}
-            onClick={() => handleSideChange('B')}
-          >
-            🎵 B-side (7곡)
-          </button>
+          <div className="side-tabs-container">
+            <button 
+              className={`side-tab ${selectedSide === 'A' ? 'active' : ''}`}
+              onClick={() => handleSideChange('A')}
+            >
+              🎵 A-side (7곡)
+            </button>
+            <button 
+              className={`side-tab ${selectedSide === 'B' ? 'active' : ''}`}
+              onClick={() => handleSideChange('B')}
+            >
+              🎵 B-side (7곡)
+            </button>
+            <div className={`slide-indicator ${selectedSide === 'B' ? 'slide-right' : ''}`}></div>
+          </div>
         </div>
 
         {/* 메인 앨범 디스플레이 */}
         <div className="main-album-display">
-          {currentSong && (
-            <div className={`album-showcase ${isTransitioning ? 'transitioning' : ''}`}>
-              <div 
-                className="main-album-cover"
-                style={{ 
-                  backgroundImage: currentSong.albumImage ? `url(${currentSong.albumImage})` : currentSong.albumColor,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-              >
-                {!currentSong.albumImage && <div className="album-icon-large">{currentSong.icon}</div>}
-              </div>
-              <div className="song-info-panel">
-                <h2 className="current-song-title">{currentSong.song}</h2>
-                <p className="current-song-artist">원곡: {currentSong.artist}</p>
-                <p className="current-song-members">{currentSong.members}</p>
-                <div className="song-counter">
-                  {currentSongIndex + 1} / {currentPlaylist.length}
+          <div className={`content-slider ${isTransitioning ? 'slide-transitioning' : ''}`}>
+            {currentSong && (
+              <div className={`album-showcase ${isSongLoading ? 'transitioning' : ''}`}>
+                <div 
+                  className="main-album-cover"
+                  style={{ 
+                    backgroundImage: currentSong.albumImage ? `url(${currentSong.albumImage})` : currentSong.albumColor,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
+                  {!currentSong.albumImage && <div className="album-icon-large">{currentSong.icon}</div>}
+                </div>
+                <div className="song-info-panel">
+                  <h2 className="current-song-title">{currentSong.song}</h2>
+                  <p className="current-song-artist">원곡: {currentSong.artist}</p>
+                  <p className="current-song-members">{currentSong.members}</p>
+                  <div className="song-counter">
+                    {currentSongIndex + 1} / {currentPlaylist.length}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* 네비게이션 버튼 */}
@@ -291,7 +316,8 @@ const SetlistPage = () => {
         </div>
 
         {/* 곡 목록 썸네일 */}
-        <div className="song-thumbnails">
+        <div className="thumbnails-wrapper">
+          <div className={`song-thumbnails ${isTransitioning ? `thumbnails-transitioning ${slideDirection}` : ''} ${showThumbnailAnimation ? 'show-animation' : ''}`}>
           {currentPlaylist.map((song, index) => (
             <div
               key={`${selectedSide}-${index}`}
@@ -300,7 +326,8 @@ const SetlistPage = () => {
               style={{ 
                 background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
                 backgroundSize: 'cover',
-                backgroundPosition: 'center'
+                backgroundPosition: 'center',
+                '--delay': `${index * 50}ms`
               }}
             >
               <div className="thumbnail-overlay">
@@ -312,6 +339,7 @@ const SetlistPage = () => {
               </div>
             </div>
           ))}
+          </div>
         </div>
 
         <div className="setlist-footer">
