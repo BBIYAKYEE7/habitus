@@ -180,12 +180,28 @@ const SetlistPage = () => {
   const handlePrevious = () => {
     if (currentSongIndex > 0) {
       handleSongSelect(currentSongIndex - 1);
+    } else if (selectedSide === 'B') {
+      // B-side 첫 곡에서 이전 버튼 누르면 A-side 마지막 곡으로
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setSelectedSide('A');
+        setCurrentSongIndex(setlistPart1.length - 1);
+        setIsTransitioning(false);
+      }, 300);
     }
   };
 
   const handleNext = () => {
     if (currentSongIndex < currentPlaylist.length - 1) {
       handleSongSelect(currentSongIndex + 1);
+    } else if (selectedSide === 'A') {
+      // A-side 마지막 곡에서 다음 버튼 누르면 B-side 첫 곡으로
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setSelectedSide('B');
+        setCurrentSongIndex(0);
+        setIsTransitioning(false);
+      }, 300);
     }
   };
 
@@ -261,14 +277,14 @@ const SetlistPage = () => {
           <button 
             className="nav-btn prev-btn"
             onClick={handlePrevious}
-            disabled={currentSongIndex === 0}
+            disabled={selectedSide === 'A' && currentSongIndex === 0}
           >
             ⬅️ 이전
           </button>
           <button 
             className="nav-btn next-btn"
             onClick={handleNext}
-            disabled={currentSongIndex === currentPlaylist.length - 1}
+            disabled={selectedSide === 'B' && currentSongIndex === currentPlaylist.length - 1}
           >
             다음 ➡️
           </button>

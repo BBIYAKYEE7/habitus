@@ -281,8 +281,8 @@
 
 .song-thumbnail {
   display: flex;
-  align-items: center;
-  gap: 15px;
+  align-items: stretch;
+  gap: 0;
   padding: 0;
   border-radius: 15px;
   cursor: pointer;
@@ -291,16 +291,18 @@
   position: relative;
   overflow: hidden;
   min-height: 100px;
+  box-sizing: border-box;
 }
 
 .thumbnail-overlay {
   display: flex;
   align-items: center;
   gap: 15px;
-  padding: 20px;
+  padding: 20px 20px;
   width: 100%;
   background: rgba(0, 0, 0, 0.6);
   transition: all 0.3s ease;
+  box-sizing: border-box;
 }
 
 .song-thumbnail:hover {
@@ -333,6 +335,8 @@
   justify-content: center;
   background: rgba(255, 255, 255, 0.2);
   flex-shrink: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 .thumbnail-info {
@@ -507,8 +511,9 @@
   }
 
   .thumbnail-overlay {
-    padding: 15px;
+    padding: 15px 15px;
     gap: 12px;
+    box-sizing: border-box;
   }
 
   .thumbnail-icon {
@@ -610,8 +615,9 @@
   }
 
   .thumbnail-overlay {
-    padding: 12px;
+    padding: 12px 12px;
     gap: 10px;
+    box-sizing: border-box;
   }
 
   .thumbnail-icon {
