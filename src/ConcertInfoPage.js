@@ -48,7 +48,7 @@ const ConcertInfoPage = () => {
     <div className="concert-info-page">
       <div className="concert-info-container">
         <header className="concert-info-header">
-          <Link to="/" className="back-button">← 메인으로</Link>
+          <Link to="/setlist" className="back-button">셋리스트 보기</Link>
           <h1>🎫 HABITUS 정기공연 정보</h1>
         </header>
 
@@ -74,14 +74,13 @@ const ConcertInfoPage = () => {
               </div>
               <div className="detail-item">
                 <span className="detail-label">⏱️ 공연시간</span>
-                <span className="detail-value">약 90분 (인터미션 포함)</span>
+                <span className="detail-value">약 120분 (인터미션 포함)</span>
               </div>
             </div>
           </div>
           <div className="sponsors-section">
             <h2>🤝 후원사</h2>
             <p className="sponsors-intro">HABITUS의 정기공연을 후원해주신 많은 업체분들께 진심으로 감사드립니다.</p>
-            <p className="sponsors-guide">🔗 업체명을 클릭하면 해당 업체 페이지로 이동합니다!</p>
             <div className="sponsors-grid">
               {sponsors.map((sponsor, index) => (
                 <div 
@@ -109,10 +108,10 @@ const ConcertInfoPage = () => {
           <div className="notice-section">
             <h2>⚠️ 공지사항</h2>
             <ul className="notice-list">
-              <li>공연 시작 10분 전까지 입장해 주세요</li>
-              <li>공연 중 사진/영상 촬영은 자유롭게 가능합니다</li>
-              <li>공연장 내에서는 정숙해지 마시고 많은 환호 부탁드니다</li>
-              <li>응급상황 시 스태프에게 즉시 알려주세요</li>
+              <li>공연 시작 10분 전까지 입장해 주세요.</li>
+              <li>공연 중 사진/영상 촬영은 자유롭게 가능합니다.</li>
+              <li>공연장 내에서는 정숙해지 마시고 많은 환호 부탁드니다!</li>
+              <li>응급상황 시 스태프에게 즉시 알려주세요.</li>
             </ul>
           </div>
         </div>

@@ -240,7 +240,7 @@ const SetlistPage = () => {
     <div className="setlist-page">
       <div className="setlist-container">
         <header className="setlist-header">
-          <Link to="/" className="back-button">← 메인으로</Link>
+          <Link to="/concert-info" className="back-button">공연정보 알아보기</Link>
           <h1>🎼 2025 HABITUS 정기공연 Tracklist</h1>
           <p className="performance-info">
             📅 2025년 12월 3일 (화) 20:30 📍 문화스포츠관 215호
@@ -318,27 +318,28 @@ const SetlistPage = () => {
         {/* 곡 목록 썸네일 */}
         <div className="thumbnails-wrapper">
           <div className={`song-thumbnails ${isTransitioning ? `thumbnails-transitioning ${slideDirection}` : ''} ${showThumbnailAnimation ? 'show-animation' : ''}`}>
-          {currentPlaylist.map((song, index) => (
-            <div
-              key={`${selectedSide}-${index}`}
-              className={`song-thumbnail ${index === currentSongIndex ? 'active' : ''}`}
-              onClick={() => handleSongSelect(index)}
-              style={{ 
-                background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                '--delay': `${index * 50}ms`
-              }}
-            >
-              <div className="thumbnail-overlay">
-                <div className="thumbnail-icon">{song.albumImage ? '' : song.icon}</div>
-                <div className="thumbnail-info">
-                  <span className="thumbnail-number">{index + 1}</span>
-                  <span className="thumbnail-title">{song.song}</span>
+            {currentPlaylist.map((song, index) => (
+              <div
+                key={`${selectedSide}-${index}`}
+                className={`song-thumbnail ${index === currentSongIndex ? 'active' : ''}`}
+                onClick={() => handleSongSelect(index)}
+                style={{ 
+                  background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  '--delay': `${index * 50}ms`
+                }}
+              >
+                <div className="thumbnail-overlay">
+                  <div className="thumbnail-icon">{song.albumImage ? '' : song.icon}</div>
+                  <div className="thumbnail-info">
+                    <span className="thumbnail-number">{index + 1}</span>
+                    <span className="thumbnail-title">{song.song}</span>
+                    <span className="thumbnail-artist">원곡: {song.artist}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
           </div>
         </div>
 
