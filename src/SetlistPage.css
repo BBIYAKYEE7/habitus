@@ -56,6 +56,28 @@
   margin: 0;
 }
 
+/* Countdown Timer */
+.countdown-container {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(226, 87, 45, 0.15);
+  border: 2px solid rgba(226, 87, 45, 0.3);
+  border-radius: 15px;
+  display: inline-block;
+  box-shadow: 0 8px 25px rgba(226, 87, 45, 0.2);
+}
+
+.countdown-timer {
+  font-family: 'JetBrains Mono', 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', monospace;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #e2572d;
+  text-shadow: 0 2px 8px rgba(226, 87, 45, 0.3);
+  letter-spacing: 0.05em;
+  display: block;
+  text-align: center;
+}
+
 /* Side Tabs */
 .side-tabs {
   display: flex;
@@ -382,6 +404,16 @@
     font-size: 13px;
   }
 
+  .countdown-container {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 12px;
+  }
+
+  .countdown-timer {
+    font-size: 1.4rem;
+  }
+
   .back-button {
     padding: 10px 18px;
     font-size: 14px;
@@ -531,6 +563,15 @@
 
   .performance-info {
     font-size: 12px;
+  }
+
+  .countdown-container {
+    margin-top: 12px;
+    padding: 12px;
+  }
+
+  .countdown-timer {
+    font-size: 1.2rem;
   }
 
   .side-tab {

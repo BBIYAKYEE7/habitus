@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './SetlistPage.css';
 
@@ -10,11 +10,55 @@ import freeImg from './setlist_album/free.png';
 import img26 from './setlist_album/26.png';
 import heanImg from './setlist_album/hean.png';
 import tictactoeImg from './setlist_album/tictactoe.png';
+import blackImg from './setlist_album/black.png';
+import nanchunImg from './setlist_album/nanchun.png';
+import nicehutImg from './setlist_album/nicehut.png';
+import gardunsangImg from './setlist_album/gardunsang.png';
+import sheImg from './setlist_album/she.png';
+import gobackImg from './setlist_album/goback.png';
+import untitledImg from './setlist_album/untitled.png';
 
 const SetlistPage = () => {
   const [selectedSide, setSelectedSide] = useState('A');
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [timeLeft, setTimeLeft] = useState('');
+
+  // 공연 날짜 설정 (2025년 12월 3일 20:30)
+  const concertDate = new Date('2025-12-03T20:30:00+09:00');
+
+  // 카운트다운 계산 함수
+  const calculateTimeLeft = () => {
+    const now = new Date();
+    const difference = concertDate - now;
+    
+    if (difference > 0) {
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+      
+      if (days > 0) {
+        return `D-${days} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      } else {
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+      }
+    } else {
+      return '공연이 시작되었습니다!';
+    }
+  };
+
+  // 카운트다운 타이머 설정
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    // 초기값 설정
+    setTimeLeft(calculateTimeLeft());
+
+    return () => clearInterval(timer);
+  }, []);
 
   const setlistPart1 = [
     { 
@@ -80,50 +124,43 @@ const SetlistPage = () => {
       song: "검을 현", 
       artist: "이승윤",
       members: "V.최민성 G.최민성 김경렬 B.김민서 D.이서연 K.김동현",
-      albumColor: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-      icon: "🎸"
+      albumImage: blackImg,
     },
     { 
       song: "난춘", 
       artist: "새소년",
       members: "V.김하영 G.김경렬 B.김하영 D.김재민 K.김동현",
-      albumColor: "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
-      icon: "🌱"
+      albumImage: nanchunImg,
     },
     { 
       song: "멋진헛간", 
       artist: "오대천왕",
       members: "V.소형석 G.김경렬 변준영 B.김하영 D.고준호",
-      albumColor: "linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)",
-      icon: "🌟"
+      albumImage: nicehutImg,
     },
     { 
       song: "가을 밤에 든 생각", 
       artist: "잔나비",
       members: "V.맹지은 G.변준영 K.소형석",
-      albumColor: "linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%)",
-      icon: "🍂"
+      albumImage: gardunsangImg,
     },
     { 
       song: "She", 
       artist: "잔나비",
       members: "V.변준영 소형석 K.소형석",
-      albumColor: "linear-gradient(135deg, #fdbb2d 0%, #22c1c3 100%)",
-      icon: "💝"
+      albumImage: sheImg,
     },
     { 
       song: "고백", 
       artist: "델리스파이스",
       members: "V.김동현 G.김경렬 김재윤 B.김도담 D.이서연 K.김하영",
-      albumColor: "linear-gradient(135deg, #e0c3fc 0%, #9bb5ff 100%)",
-      icon: "💌"
+      albumImage: gobackImg,
     },
     { 
       song: "무제", 
       artist: "브로큰 발렌타인",
       members: "V.최민성 G.최민성 김경렬 B.김하영 D.이서연",
-      albumColor: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-      icon: "🎵"
+      albumImage: untitledImg,
     }
   ];
 
@@ -172,6 +209,9 @@ const SetlistPage = () => {
           <p className="performance-info">
             📅 2025년 12월 3일 (화) 20:30 📍 문화스포츠관 215호
           </p>
+          <div className="countdown-container">
+            <span className="countdown-timer">{timeLeft}</span>
+          </div>
         </header>
 
         {/* Side 선택 탭 */}
