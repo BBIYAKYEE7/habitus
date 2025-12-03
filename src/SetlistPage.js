@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './SetlistPage.css';
 
@@ -25,13 +25,13 @@ const SetlistPage = () => {
   const [timeLeft, setTimeLeft] = useState('');
   const [slideDirection, setSlideDirection] = useState('');
   const [isSongLoading, setIsSongLoading] = useState(false);
-  const [showThumbnailAnimation, setShowThumbnailAnimation] = useState(false);
+  const [nextSide, setNextSide] = useState(null);
 
   // 공연 날짜 설정 (2025년 12월 3일 20:30)
-  const concertDate = new Date('2025-12-03T20:30:00+09:00');
+  const concertDate = useMemo(() => new Date('2025-12-03T20:30:00+09:00'), []);
 
   // 카운트다운 계산 함수
-  const calculateTimeLeft = () => {
+  const calculateTimeLeft = useCallback(() => {
     const now = new Date();
     const difference = concertDate - now;
     
@@ -49,7 +49,7 @@ const SetlistPage = () => {
     } else {
       return '공연이 시작되었습니다!';
     }
-  };
+  }, [concertDate]);
 
   // 카운트다운 타이머 설정
   useEffect(() => {
@@ -61,7 +61,7 @@ const SetlistPage = () => {
     setTimeLeft(calculateTimeLeft());
 
     return () => clearInterval(timer);
-  }, []);
+  }, [calculateTimeLeft]);
 
   const setlistPart1 = [
     { 
@@ -186,53 +186,64 @@ const SetlistPage = () => {
   const handlePrevious = () => {
     if (currentSongIndex > 0) {
       handleSongSelect(currentSongIndex - 1);
-    } else if (selectedSide === 'B') {
-      // B-side 첫 곡에서 이전 버튼 누르면 A-side 마지막 곡으로 (로딩 없음)
+    } else if (selectedSide === 'B' && !isTransitioning) {
+      // B-side 첫 곡에서 이전 버튼 누르면 A-side 마지막 곡으로
+      setNextSide('A');
       setSlideDirection('slide-right');
+      
+      // 즉시 애니메이션 시작하여 B→A 전환을 명확히 보이게 함
       setIsTransitioning(true);
+      
       setTimeout(() => {
         setSelectedSide('A');
         setCurrentSongIndex(setlistPart1.length - 1);
         setIsTransitioning(false);
         setSlideDirection('');
-        setShowThumbnailAnimation(true);
-        setTimeout(() => setShowThumbnailAnimation(false), 2000);
-      }, 300);
+        setNextSide(null);
+      }, 1000); // 정확히 1초 후
     }
   };
 
   const handleNext = () => {
     if (currentSongIndex < currentPlaylist.length - 1) {
       handleSongSelect(currentSongIndex + 1);
-    } else if (selectedSide === 'A') {
-      // A-side 마지막 곡에서 다음 버튼 누르면 B-side 첫 곡으로 (로딩 없음)
+    } else if (selectedSide === 'A' && !isTransitioning) {
+      // A-side 마지막 곡에서 다음 버튼 누르면 B-side 첫 곡으로
+      setNextSide('B');
       setSlideDirection('slide-left');
+      
+      // 즉시 애니메이션 시작
       setIsTransitioning(true);
+      
       setTimeout(() => {
         setSelectedSide('B');
         setCurrentSongIndex(0);
         setIsTransitioning(false);
         setSlideDirection('');
-        setShowThumbnailAnimation(true);
-        setTimeout(() => setShowThumbnailAnimation(false), 2000);
-      }, 300);
+        setNextSide(null);
+      }, 1000);
     }
   };
 
   const handleSideChange = (side) => {
-    if (side !== selectedSide) {
-      // A에서 B로: 왼쪽으로 슬라이드, B에서 A로: 오른쪽으로 슬라이드 (로딩 없음)
+    if (side !== selectedSide && !isTransitioning) {
+      // A에서 B로: 왼쪽으로 슬라이드, B에서 A로: 오른쪽으로 슬라이드
       const direction = selectedSide === 'A' && side === 'B' ? 'slide-left' : 'slide-right';
+      
+      setNextSide(side);
       setSlideDirection(direction);
+      
+      // 즉시 애니메이션 시작
       setIsTransitioning(true);
+      
+      // 애니메이션 완료 후 상태 정리
       setTimeout(() => {
         setSelectedSide(side);
-        setCurrentSongIndex(0);
+        setCurrentSongIndex(direction === 'slide-right' ? setlistPart1.length - 1 : 0);
         setIsTransitioning(false);
         setSlideDirection('');
-        setShowThumbnailAnimation(true);
-        setTimeout(() => setShowThumbnailAnimation(false), 2000);
-      }, 300);
+        setNextSide(null);
+      }, 1000);
     }
   };
 
@@ -265,13 +276,17 @@ const SetlistPage = () => {
             >
               🎵 B-side (7곡)
             </button>
-            <div className={`slide-indicator ${selectedSide === 'B' ? 'slide-right' : ''}`}></div>
+            <div className={`slide-indicator ${
+              isTransitioning && nextSide === 'B' ? 'slide-right' :
+              isTransitioning && nextSide === 'A' ? '' :
+              selectedSide === 'B' ? 'slide-right' : ''
+            }`}></div>
           </div>
         </div>
 
         {/* 메인 앨범 디스플레이 */}
         <div className="main-album-display">
-          <div className={`content-slider ${isTransitioning ? 'slide-transitioning' : ''}`}>
+          <div className="content-slider">
             {currentSong && (
               <div className={`album-showcase ${isSongLoading ? 'transitioning' : ''}`}>
                 <div 
@@ -317,28 +332,66 @@ const SetlistPage = () => {
 
         {/* 곡 목록 썸네일 */}
         <div className="thumbnails-wrapper">
-          <div className={`song-thumbnails ${isTransitioning ? `thumbnails-transitioning ${slideDirection}` : ''} ${showThumbnailAnimation ? 'show-animation' : ''}`}>
-            {currentPlaylist.map((song, index) => (
-              <div
-                key={`${selectedSide}-${index}`}
-                className={`song-thumbnail ${index === currentSongIndex ? 'active' : ''}`}
-                onClick={() => handleSongSelect(index)}
-                style={{ 
-                  background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  '--delay': `${index * 50}ms`
-                }}
-              >
-                <div className="thumbnail-overlay">
-                  <div className="thumbnail-info">
-                    <span className="thumbnail-number">{index + 1}</span>
-                    <span className="thumbnail-title">{song.song}</span>
-                    <span className="thumbnail-artist">원곡: {song.artist}</span>
+          <div className={`thumbnails-slider ${
+            isTransitioning ? `sliding-${slideDirection}` : 
+            (selectedSide === 'B' && !nextSide ? 'b-side-selected' : '')
+          }`}>
+            {/* A-side를 항상 첫 번째에, B-side를 항상 두 번째에 배치 */}
+            {/* 첫 번째 슬롯: A-side */}
+            <div className="song-thumbnails">
+              {setlistPart1.map((song, index) => (
+                <div
+                  key={`A-${index}`}
+                  className={`song-thumbnail ${
+                    selectedSide === 'A' && index === currentSongIndex && !isTransitioning ? 'active' : 
+                    isTransitioning && slideDirection === 'slide-right' && nextSide === 'A' && 
+                    index === setlistPart1.length - 1 ? 'active' : ''
+                  }`}
+                  onClick={() => !isTransitioning && selectedSide === 'A' && handleSongSelect(index)}
+                  style={{ 
+                    background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
+                  <div className="thumbnail-overlay">
+                    <div className="thumbnail-info">
+                      <span className="thumbnail-number">{index + 1}</span>
+                      <span className="thumbnail-title">{song.song}</span>
+                      <span className="thumbnail-artist">원곡: {song.artist}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* 두 번째 슬롯: B-side */}
+            <div className="song-thumbnails">
+              {setlistPart2.map((song, index) => (
+                <div
+                  key={`B-${index}`}
+                  className={`song-thumbnail ${
+                    selectedSide === 'B' && index === currentSongIndex && !isTransitioning ? 'active' : 
+                    isTransitioning && slideDirection === 'slide-left' && nextSide === 'B' && 
+                    index === 0 ? 'active' : ''
+                  }`}
+                  onClick={() => !isTransitioning && selectedSide === 'B' && handleSongSelect(index)}
+                  style={{ 
+                    background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                >
+                  <div className="thumbnail-overlay">
+                    <div className="thumbnail-info">
+                      <span className="thumbnail-number">{index + 1}</span>
+                      <span className="thumbnail-title">{song.song}</span>
+                      <span className="thumbnail-artist">원곡: {song.artist}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

@@ -128,7 +128,7 @@
   height: calc(100% - 8px);
   background: linear-gradient(135deg, #e2572d, #ff6b3d);
   border-radius: 25px;
-  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 1s ease-in-out; /* 썸네일과 동일한 애니메이션 시간 */
   box-shadow: 0 8px 25px rgba(226, 87, 45, 0.4);
   z-index: 1;
 }
@@ -150,11 +150,6 @@
 .content-slider {
   width: 100%;
   transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.content-slider.slide-transitioning {
-  transform: translateX(-10px);
-  opacity: 0.8;
 }
 
 .album-showcase {
@@ -336,68 +331,43 @@
   box-shadow: none;
 }
 
-/* Song Thumbnails */
+/* Song Thumbnails - 연속 슬라이드 */
 .thumbnails-wrapper {
   overflow: hidden;
   margin-bottom: 40px;
+}
+
+.thumbnails-slider {
+  position: relative;
+  width: 200%; /* 두 개의 썸네일을 나란히 배치하기 위해 */
+  display: flex;
+  transform: translateX(0); /* 기본 위치: 첫 번째 썸네일 표시 */
 }
 
 .song-thumbnails {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 15px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 50%; /* 전체 슬라이더의 절반 크기 */
+  flex-shrink: 0;
 }
 
-.song-thumbnails.thumbnails-transitioning.slide-left {
-  opacity: 0;
-  transform: translateX(-100%);
+/* 기본 상태 */
+.thumbnails-slider.b-side-selected {
+  transform: translateX(-50%);
 }
 
-.song-thumbnails.thumbnails-transitioning.slide-right {
-  opacity: 0;
-  transform: translateX(100%);
+/* 슬라이드 애니메이션 - 더 명확한 우선순위 */
+.thumbnails-slider.sliding-slide-left {
+  transform: translateX(-50%) !important;
+  transition: transform 1s ease-in-out !important;
 }
 
-/* 개별 노래 전환시에는 애니메이션 없음 */
-.song-thumbnails:not(.thumbnails-transitioning) .song-thumbnail {
-  opacity: 1;
+.thumbnails-slider.sliding-slide-right {
+  transform: translateX(0) !important;
+  transition: transform 1s ease-in-out !important;
 }
 
-/* 사이드 전환 완료 후에만 썸네일 등장 애니메이션 */
-.song-thumbnails.show-animation .song-thumbnail {
-  animation: slideInFromSide 0.4s ease-out forwards;
-  animation-delay: var(--delay, 0ms);
-  opacity: 0;
-}
-
-.song-thumbnails.thumbnails-transitioning .song-thumbnail {
-  animation: none;
-}
-
-@keyframes slideInFromSide {
-  from {
-    opacity: 0;
-    transform: translateX(50px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
-
-/* 슬라이드 방향별 enter 애니메이션 제거 - 사이드 전환시에만 애니메이션 적용 */
-
-@keyframes slideInFromRight {
-  from {
-    opacity: 0;
-    transform: translateX(100px) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
-}
 
 /* 로딩 스피너 애니메이션 */
 @keyframes spin {
