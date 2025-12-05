@@ -2,55 +2,40 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './ArchivePage.css';
 
-// 2025 공연 영상 import
-import video26 from './archive/2025/26.mp4';
-import videoButterfly from './archive/2025/Butterfly.mp4';
-import videoDrowning from './archive/2025/Drowning.mp4';
-import videoFree from './archive/2025/Free.mp4';
-import videoLostStars from './archive/2025/Lost Stars.mp4';
-import videoShe from './archive/2025/She.mp4';
-import videoTikTakToe from './archive/2025/T + Tik Tak Toe.mp4';
-import video검을현 from './archive/2025/검을 현.mp4';
-import video고백 from './archive/2025/고백.mp4';
-import video난춘 from './archive/2025/난춘.mp4';
-import video멋진헛간 from './archive/2025/멋진 헛간.mp4';
-import video무제 from './archive/2025/무제.mp4';
-import video입춘 from './archive/2025/입춘.mp4';
-import video흰수염고래 from './archive/2025/흰수염고래.mp4';
+// 아카이브 데이터 구조 (컴포넌트 외부에 정의하여 불필요한 재생성 방지)
+// public 폴더의 파일은 process.env.PUBLIC_URL을 통해 접근
+const archiveData = {
+  folders: [
+    {
+      id: '2025',
+      name: '🎸 2025 정기공연',
+      icon: '🎬',
+      color: '#e2572d',
+      files: [
+        { id: 'v1', name: '26', artist: '윤하', type: 'video', url: '/archive/2025/26.mp4' },
+        { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', url: '/archive/2025/Butterfly.mp4' },
+        { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', url: '/archive/2025/Drowning.mp4' },
+        { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', url: '/archive/2025/Free.mp4' },
+        { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', url: '/archive/2025/Lost Stars.mp4' },
+        { id: 'v6', name: 'She', artist: '잔나비', type: 'video', url: '/archive/2025/She.mp4' },
+        { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', url: '/archive/2025/T + Tik Tak Toe.mp4' },
+        { id: 'v8', name: '검을 현', artist: '이승윤', type: 'video', url: '/archive/2025/검을 현.mp4' },
+        { id: 'v9', name: '고백', artist: '델리스파이스', type: 'video', url: '/archive/2025/고백.mp4' },
+        { id: 'v10', name: '난춘', artist: '새소년', type: 'video', url: '/archive/2025/난춘.mp4' },
+        { id: 'v11', name: '멋진 헛간', artist: '오대천왕', type: 'video', url: '/archive/2025/멋진 헛간.mp4' },
+        { id: 'v12', name: '무제', artist: '브로큰 발렌타인', type: 'video', url: '/archive/2025/무제.mp4' },
+        { id: 'v13', name: '입춘', artist: '한로로', type: 'video', url: '/archive/2025/입춘.mp4' },
+        { id: 'v14', name: '흰수염고래', artist: 'YB', type: 'video', url: '/archive/2025/흰수염고래.mp4' },
+      ]
+    }
+  ]
+};
 
 const ArchivePage = () => {
   const [currentFolder, setCurrentFolder] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [selectedCategory, setSelectedCategory] = useState('all');
-
-  // 아카이브 데이터 구조
-  const archiveData = {
-    folders: [
-      {
-        id: '2025',
-        name: '🎸 2025 정기공연',
-        icon: '🎬',
-        color: '#e2572d',
-        files: [
-          { id: 'v1', name: '26', artist: '윤하', type: 'video', url: video26 },
-          { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', url: videoButterfly },
-          { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', url: videoDrowning },
-          { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', url: videoFree },
-          { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', url: videoLostStars },
-          { id: 'v6', name: 'She', artist: '잔나비', type: 'video', url: videoShe },
-          { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', url: videoTikTakToe },
-          { id: 'v8', name: '검을 현', artist: '이승윤', type: 'video', url: video검을현 },
-          { id: 'v9', name: '고백', artist: '델리스파이스', type: 'video', url: video고백 },
-          { id: 'v10', name: '난춘', artist: '새소년', type: 'video', url: video난춘 },
-          { id: 'v11', name: '멋진 헛간', artist: '오대천왕', type: 'video', url: video멋진헛간 },
-          { id: 'v12', name: '무제', artist: '브로큰 발렌타인', type: 'video', url: video무제 },
-          { id: 'v13', name: '입춘', artist: '한로로', type: 'video', url: video입춘 },
-          { id: 'v14', name: '흰수염고래', artist: 'YB', type: 'video', url: video흰수염고래 },
-        ]
-      }
-    ]
-  };
 
   // 파일 타입별 아이콘
   const getFileIcon = (type) => {
@@ -98,7 +83,7 @@ const ArchivePage = () => {
       folder.id === selectedCategory &&
       folder.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [currentFolder, searchQuery, selectedCategory, archiveData.folders]);
+  }, [currentFolder, searchQuery, selectedCategory]);
 
   // 전체 파일 수 계산
   const totalFiles = archiveData.folders.reduce((acc, folder) => acc + folder.files.length, 0);

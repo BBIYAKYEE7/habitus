@@ -13,7 +13,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/setlist" element={<SetlistPage />} />
         <Route path="/concert-info" element={<ConcertInfoPage />} />
-        <Route path="/archieve" element={<ArchivePage />} />
+        <Route path="/archive" element={<ArchivePage />} />
       </Routes>
     </Router>
   );
