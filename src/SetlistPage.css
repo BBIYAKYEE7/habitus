@@ -192,8 +192,9 @@
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
-  cursor: pointer;
+  cursor: default;
 }
+
 
 .main-album-cover::before {
   content: '';
@@ -212,11 +213,13 @@
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
 }
 
+
 /* 로딩 중일 때는 hover 효과 비활성화 */
 .album-showcase.transitioning .main-album-cover:hover {
   transform: none;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
 }
+
 
 .album-icon-large {
   font-size: 6rem;
@@ -335,36 +338,38 @@
 .thumbnails-wrapper {
   overflow: hidden;
   margin-bottom: 40px;
+  padding: 0 20px; /* 양쪽 여백 추가 */
 }
 
 .thumbnails-slider {
   position: relative;
-  width: 200%; /* 두 개의 썸네일을 나란히 배치하기 위해 */
+  width: calc(200% + 60px); /* 2개 썸네일 + 60px 간격 */
   display: flex;
+  gap: 60px; /* A-side와 B-side 사이 간격 */
   transform: translateX(0); /* 기본 위치: 첫 번째 썸네일 표시 */
 }
 
 .song-thumbnails {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 15px;
-  width: 50%; /* 전체 슬라이더의 절반 크기 */
+  gap: 30px;
+  width: calc(50% - 30px); /* 각각 절반씩 (gap의 절반 빼기) */
   flex-shrink: 0;
 }
 
 /* 기본 상태 */
 .thumbnails-slider.b-side-selected {
-  transform: translateX(-50%);
+  transform: translateX(calc(-50% - 30px)); /* B-side 위치 */
 }
 
 /* 슬라이드 애니메이션 - 더 명확한 우선순위 */
 .thumbnails-slider.sliding-slide-left {
-  transform: translateX(-50%) !important;
+  transform: translateX(calc(-50% - 30px)) !important; /* B-side 위치 */
   transition: transform 1s ease-in-out !important;
 }
 
 .thumbnails-slider.sliding-slide-right {
-  transform: translateX(0) !important;
+  transform: translateX(0) !important; /* A-side 위치 */
   transition: transform 1s ease-in-out !important;
 }
 
@@ -456,13 +461,14 @@
 
 .song-thumbnail.active {
   border-color: #e2572d;
-  box-shadow: 0 20px 50px rgba(226, 87, 45, 0.3);
+  box-shadow: none;
   transform: scale(1.02);
 }
 
 .song-thumbnail.active .thumbnail-overlay {
   background: rgba(226, 87, 45, 0.8);
 }
+
 
 .song-thumbnail.loading {
   position: relative;
@@ -536,6 +542,7 @@
   color: rgba(255, 255, 255, 0.8);
   font-weight: 400;
 }
+
 
 /* Footer */
 .setlist-footer {
@@ -697,7 +704,7 @@
 
   .song-thumbnails {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 30px;
   }
 
   .song-thumbnail {
@@ -823,6 +830,10 @@
   .nav-btn {
     padding: 10px 20px;
     font-size: 13px;
+  }
+
+  .song-thumbnails {
+    gap: 25px; /* 작은 모바일에서도 충분한 간격 */
   }
 
   .song-thumbnail {

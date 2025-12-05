@@ -18,6 +18,7 @@ import sheImg from './setlist_album/she.png';
 import gobackImg from './setlist_album/goback.png';
 import untitledImg from './setlist_album/untitled.png';
 
+
 const SetlistPage = () => {
   const [selectedSide, setSelectedSide] = useState('A');
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
@@ -170,6 +171,7 @@ const SetlistPage = () => {
   const currentPlaylist = selectedSide === 'A' ? setlistPart1 : setlistPart2;
   const currentSong = currentPlaylist[currentSongIndex];
 
+
   const handleSongSelect = (index) => {
     if (index !== currentSongIndex) {
       // 메인 앨범 정보 로딩 애니메이션 적용
@@ -200,7 +202,7 @@ const SetlistPage = () => {
         setIsTransitioning(false);
         setSlideDirection('');
         setNextSide(null);
-      }, 1000); // 정확히 1초 후
+      }, 1000);
     }
   };
 
@@ -368,7 +370,7 @@ const SetlistPage = () => {
             {/* 두 번째 슬롯: B-side */}
             <div className="song-thumbnails">
               {setlistPart2.map((song, index) => (
-                <div
+              <div
                   key={`B-${index}`}
                   className={`song-thumbnail ${
                     selectedSide === 'B' && index === currentSongIndex && !isTransitioning ? 'active' : 
@@ -376,21 +378,21 @@ const SetlistPage = () => {
                     index === 0 ? 'active' : ''
                   }`}
                   onClick={() => !isTransitioning && selectedSide === 'B' && handleSongSelect(index)}
-                  style={{ 
-                    background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
-                    backgroundSize: 'cover',
+                style={{ 
+                  background: song.albumImage ? `url(${song.albumImage})` : song.albumColor,
+                  backgroundSize: 'cover',
                     backgroundPosition: 'center'
-                  }}
-                >
-                  <div className="thumbnail-overlay">
-                    <div className="thumbnail-info">
-                      <span className="thumbnail-number">{index + 1}</span>
-                      <span className="thumbnail-title">{song.song}</span>
-                      <span className="thumbnail-artist">원곡: {song.artist}</span>
-                    </div>
+                }}
+              >
+                <div className="thumbnail-overlay">
+                  <div className="thumbnail-info">
+                    <span className="thumbnail-number">{index + 1}</span>
+                    <span className="thumbnail-title">{song.song}</span>
+                    <span className="thumbnail-artist">원곡: {song.artist}</span>
                   </div>
                 </div>
-              ))}
+              </div>
+            ))}
             </div>
           </div>
         </div>

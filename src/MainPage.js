@@ -1,22 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import bannerImg from './image/banner.png';
-import ConcertPopup from './ConcertPopup';
 import './App.css';
 
 function MainPage() {
   const sectionIds = useMemo(() => ['about', 'sessions', 'apply'], []);
   const snapOrder = useMemo(() => ['hero', ...sectionIds], [sectionIds]);
   const [activeId, setActiveId] = useState('about');
-  const [isConcertPopupOpen, setIsConcertPopupOpen] = useState(false);
-
-  // 페이지 로드 시 자동으로 팝업 열기
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsConcertPopupOpen(true);
-    }, 1000); // 1초 후 팝업 열기
-    
-    return () => clearTimeout(timer);
-  }, []);
 
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('.Section'));
@@ -91,12 +80,6 @@ function MainPage() {
         <p className="Hero__subtitle">공공정책대학 밴드 동아리</p>
         <p className="Hero__period">9/1 (Mon) ~ 9/12 (Fri) · 오디션 ~ 9/13 (Sat)</p>
         <p className="Hero__note">현재 신입 선발이 종료되었습니다.</p>
-        <button 
-          className="Hero__concert-button"
-          onClick={() => setIsConcertPopupOpen(true)}
-        >
-          🎵 정기공연 안내 보기
-        </button>
       </header>
 
       <main className="Main" role="main">
@@ -195,12 +178,6 @@ function MainPage() {
           <small>© {new Date().getFullYear()} HABITUS, KU Sejong</small>
         </div>
       </footer>
-      
-      {/* 정기공연 팝업 */}
-      <ConcertPopup 
-        isOpen={isConcertPopupOpen}
-        onClose={() => setIsConcertPopupOpen(false)}
-      />
     </div>
   );
 }
