@@ -36,6 +36,7 @@ const ArchivePage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [playingVideo, setPlayingVideo] = useState(null); // 현재 재생 중인 영상
 
   // 파일 타입별 아이콘
   const getFileIcon = (type) => {
@@ -88,14 +89,14 @@ const ArchivePage = () => {
   // 전체 파일 수 계산
   const totalFiles = archiveData.folders.reduce((acc, folder) => acc + folder.files.length, 0);
 
-  // 다운로드 핸들러
-  const handleDownload = (file) => {
-    const link = document.createElement('a');
-    link.href = file.url;
-    link.download = `${file.name}.mp4`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  // 영상 재생 핸들러
+  const handlePlayVideo = (file) => {
+    setPlayingVideo(file);
+  };
+
+  // 영상 모달 닫기
+  const handleCloseVideo = () => {
+    setPlayingVideo(null);
   };
 
   // 폴더 클릭 핸들러
@@ -249,6 +250,7 @@ const ArchivePage = () => {
                   <div
                     key={file.id}
                     className="file-card"
+                    onClick={() => handlePlayVideo(file)}
                     style={{ 
                       '--file-color': getFileColor(file.type),
                       '--delay': `${index * 0.05}s`
@@ -256,6 +258,9 @@ const ArchivePage = () => {
                   >
                     <div className="file-icon-wrapper">
                       <span className="file-icon">{getFileIcon(file.type)}</span>
+                      <div className="play-overlay">
+                        <span className="play-icon">▶</span>
+                      </div>
                     </div>
                     <div className="file-info">
                       <h4 className="file-name">{file.name}</h4>
@@ -264,16 +269,10 @@ const ArchivePage = () => {
                         <span className="file-type">{file.type.toUpperCase()}</span>
                       </div>
                     </div>
-                    <button 
-                      className="download-btn"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDownload(file);
-                      }}
-                    >
-                      <span className="download-icon">⬇️</span>
-                      <span className="download-text">다운로드</span>
-                    </button>
+                    <div className="play-btn">
+                      <span className="play-btn-icon">▶</span>
+                      <span className="play-btn-text">재생</span>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -292,6 +291,30 @@ const ArchivePage = () => {
           <p>무단 배포 및 상업적 이용을 금지합니다.</p>
         </footer>
       </div>
+
+      {/* 비디오 플레이어 모달 */}
+      {playingVideo && (
+        <div className="video-modal-overlay" onClick={handleCloseVideo}>
+          <div className="video-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="video-close-btn" onClick={handleCloseVideo}>✕</button>
+            <div className="video-header">
+              <h3 className="video-title">{playingVideo.name}</h3>
+              <p className="video-artist">🎤 {playingVideo.artist}</p>
+            </div>
+            <div className="video-wrapper">
+              <video
+                key={playingVideo.id}
+                controls
+                autoPlay
+                className="video-player"
+              >
+                <source src={playingVideo.url} type="video/mp4" />
+                브라우저가 비디오 재생을 지원하지 않습니다.
+              </video>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

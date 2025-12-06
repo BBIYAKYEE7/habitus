@@ -379,17 +379,6 @@
   background: var(--elevated);
 }
 
-.file-icon-wrapper {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-
 .file-icon {
   font-size: 24px;
 }
@@ -430,7 +419,7 @@
   font-size: 11px;
 }
 
-.download-btn {
+.play-btn {
   display: flex;
   align-items: center;
   gap: 6px;
@@ -446,17 +435,55 @@
   white-space: nowrap;
 }
 
-.download-btn:hover {
+.file-card:hover .play-btn {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(226, 87, 45, 0.35);
 }
 
-.download-btn:active {
-  transform: translateY(0);
+.play-btn-icon {
+  font-size: 12px;
 }
 
-.download-icon {
-  font-size: 14px;
+/* 파일 아이콘 위 재생 오버레이 */
+.file-icon-wrapper {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.play-overlay .play-icon {
+  color: white;
+  font-size: 18px;
+}
+
+.file-card:hover .play-overlay {
+  opacity: 1;
+}
+
+.file-card {
+  cursor: pointer;
 }
 
 /* List view adjustments */
@@ -473,11 +500,11 @@
   font-size: 20px;
 }
 
-.file-grid.list .download-btn {
+.file-grid.list .play-btn {
   padding: 8px 14px;
 }
 
-.file-grid.list .download-text {
+.file-grid.list .play-btn-text {
   display: none;
 }
 
@@ -560,13 +587,13 @@
     width: calc(100% - 64px);
   }
 
-  .download-btn {
+  .play-btn {
     width: 100%;
     justify-content: center;
     margin-top: 8px;
   }
 
-  .download-text {
+  .play-btn-text {
     display: inline;
   }
 
@@ -616,5 +643,138 @@
 
 .archive-page::-webkit-scrollbar-thumb:hover {
   background: var(--muted);
+}
+
+/* ===== Video Modal ===== */
+.video-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.video-modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.video-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.video-close-btn:hover {
+  background: rgba(226, 87, 45, 0.8);
+  transform: scale(1.1);
+}
+
+.video-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.video-title {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.video-artist {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.video-wrapper {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-player {
+  width: 100%;
+  max-height: 70vh;
+  display: block;
+}
+
+/* 모바일 비디오 모달 */
+@media (max-width: 768px) {
+  .video-modal-overlay {
+    padding: 0;
+    align-items: flex-end;
+  }
+
+  .video-modal {
+    max-width: 100%;
+    max-height: 85vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .video-header {
+    padding: 16px 20px;
+  }
+
+  .video-title {
+    font-size: 1.2rem;
+    padding-right: 40px;
+  }
+
+  .video-close-btn {
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+  }
 }
 
