@@ -3,37 +3,68 @@ import { Link } from 'react-router-dom';
 import './ArchivePage.css';
 
 // 아카이브 데이터 구조 - YouTube 임베드 방식
-// youtubeId: YouTube 영상 URL에서 v= 뒤의 ID
+// 중첩 폴더 구조 지원: folders > subfolders > files
 const archiveData = {
   folders: [
     {
       id: '2025',
       name: '🎸 2025 정기공연',
-      icon: '🎬',
+      icon: '📁',
       color: '#e2572d',
-      files: [
-        { id: 'v1', name: '26', artist: '윤하', type: 'video', youtubeId: 'uNnzbRm6J2I' },
-        { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', youtubeId: 'L19YlN8dpAI' },
-        { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', youtubeId: 'cYWdqxqHrQQ' },
-        { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', youtubeId: 'zVm-MqihY50' },
-        { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: 'MHS57KkRGKc' },
-        { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: 'fjsmdd5r6F8' },
-        { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: 'TAaafu1_xQE' },
-        { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: 'lTrt0_PX8Is' },
-        { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: 'eZ1R_YIBVs0' },
-        { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: '0i6W3ySjAKE' },
-        { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: '', disabled: true },
-        { id: 'v12', name: '멋진 헛간', artist: '오대천왕', type: 'video', youtubeId: '', disabled: true },
-        { id: 'v13', name: '무제', artist: '브로큰 발렌타인', type: 'video', youtubeId: '', disabled: true },
-        { id: 'v14', name: '입춘', artist: '한로로', type: 'video', youtubeId: '', disabled: true },
-        { id: 'v15', name: '흰수염고래', artist: 'YB', type: 'video', youtubeId: '', disabled: true },
+      subfolders: [
+        {
+          id: '2025-all',
+          name: '🎤 전체영상',
+          icon: '🎤',
+          color: '#e2572d',
+          files: [
+            { id: 'v1', name: '26', artist: '윤하', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v12', name: '멋진 헛간', artist: '오대천왕', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v13', name: '무제', artist: '브로큰 발렌타인', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v14', name: '입춘', artist: '한로로', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v15', name: '흰수염고래', artist: 'YB', type: 'video', youtubeId: '', disabled: true },
+          ]
+        },
+        {
+          id: '2025-drum',
+          name: '🥁 드럼 시점',
+          icon: '🥁',
+          color: '#e2572d',
+          files: [
+            { id: 'v1', name: '26', artist: '윤하', type: 'video', youtubeId: 'uNnzbRm6J2I' },
+            { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', youtubeId: 'L19YlN8dpAI' },
+            { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', youtubeId: 'cYWdqxqHrQQ' },
+            { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', youtubeId: 'zVm-MqihY50' },
+            { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: 'MHS57KkRGKc' },
+            { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: 'fjsmdd5r6F8' },
+            { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: 'TAaafu1_xQE' },
+            { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: 'lTrt0_PX8Is' },
+            { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: 'eZ1R_YIBVs0' },
+            { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: '0i6W3ySjAKE' },
+            { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v12', name: '멋진 헛간', artist: '오대천왕', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v13', name: '무제', artist: '브로큰 발렌타인', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v14', name: '입춘', artist: '한로로', type: 'video', youtubeId: '', disabled: true },
+            { id: 'v15', name: '흰수염고래', artist: 'YB', type: 'video', youtubeId: '', disabled: true },
+          ]
+        }
       ]
     }
   ]
 };
 
 const ArchivePage = () => {
-  const [currentFolder, setCurrentFolder] = useState(null);
+  const [currentPath, setCurrentPath] = useState([]); // [folderId, subfolderId]
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -61,30 +92,49 @@ const ArchivePage = () => {
     }
   };
 
+  // 현재 위치에 따른 데이터
+  const getCurrentData = () => {
+    if (currentPath.length === 0) {
+      // 최상위: 폴더 목록
+      return { type: 'folders', data: archiveData.folders };
+    } else if (currentPath.length === 1) {
+      // 1단계: 하위 폴더 목록
+      const folder = archiveData.folders.find(f => f.id === currentPath[0]);
+      if (folder?.subfolders) {
+        return { type: 'subfolders', data: folder.subfolders, parent: folder };
+      }
+      return { type: 'files', data: folder?.files || [], parent: folder };
+    } else if (currentPath.length === 2) {
+      // 2단계: 파일 목록
+      const folder = archiveData.folders.find(f => f.id === currentPath[0]);
+      const subfolder = folder?.subfolders?.find(sf => sf.id === currentPath[1]);
+      return { type: 'files', data: subfolder?.files || [], parent: subfolder };
+    }
+    return { type: 'folders', data: [] };
+  };
+
+  const currentData = getCurrentData();
+
   const filteredContent = useMemo(() => {
-    if (currentFolder) {
-      const folder = archiveData.folders.find(f => f.id === currentFolder);
-      if (!folder) return [];
-      
-      return folder.files.filter(file => 
+    const { data } = currentData;
+    if (currentData.type === 'files') {
+      return data.filter(file => 
         file.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         file.artist.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-    
-    if (selectedCategory === 'all') {
-      return archiveData.folders.filter(folder =>
-        folder.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-    }
-    
-    return archiveData.folders.filter(folder => 
-      folder.id === selectedCategory &&
-      folder.name.toLowerCase().includes(searchQuery.toLowerCase())
+    return data.filter(item =>
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [currentFolder, searchQuery, selectedCategory]);
+  }, [currentData, searchQuery]);
 
-  const totalFiles = archiveData.folders.reduce((acc, folder) => acc + folder.files.length, 0);
+  // 전체 파일 수 계산
+  const totalFiles = archiveData.folders.reduce((acc, folder) => {
+    if (folder.subfolders) {
+      return acc + folder.subfolders.reduce((subAcc, sub) => subAcc + (sub.files?.length || 0), 0);
+    }
+    return acc + (folder.files?.length || 0);
+  }, 0);
 
   const handlePlayVideo = (file) => {
     setPlayingVideo(file);
@@ -96,19 +146,41 @@ const ArchivePage = () => {
 
   const handleFolderClick = (folderId) => {
     setPlayingVideo(null);
-    setCurrentFolder(folderId);
+    setCurrentPath([...currentPath, folderId]);
     setSearchQuery('');
   };
 
   const handleBack = () => {
     setPlayingVideo(null);
-    setCurrentFolder(null);
+    setCurrentPath(currentPath.slice(0, -1));
     setSearchQuery('');
   };
 
-  const currentFolderData = currentFolder 
-    ? archiveData.folders.find(f => f.id === currentFolder) 
-    : null;
+  const handleGoHome = () => {
+    setPlayingVideo(null);
+    setCurrentPath([]);
+    setSearchQuery('');
+  };
+
+  // 브레드크럼 경로 정보
+  const getBreadcrumbs = () => {
+    const crumbs = [{ id: 'home', name: '🏠 전체', path: [] }];
+    
+    if (currentPath.length >= 1) {
+      const folder = archiveData.folders.find(f => f.id === currentPath[0]);
+      if (folder) crumbs.push({ id: folder.id, name: folder.name, path: [folder.id] });
+    }
+    
+    if (currentPath.length >= 2) {
+      const folder = archiveData.folders.find(f => f.id === currentPath[0]);
+      const subfolder = folder?.subfolders?.find(sf => sf.id === currentPath[1]);
+      if (subfolder) crumbs.push({ id: subfolder.id, name: subfolder.name, path: [folder.id, subfolder.id] });
+    }
+    
+    return crumbs;
+  };
+
+  const breadcrumbs = getBreadcrumbs();
 
   return (
     <div className="archive-page">
@@ -167,23 +239,20 @@ const ArchivePage = () => {
         </header>
 
         <nav className="breadcrumb">
-          <button 
-            className={`breadcrumb-item ${!currentFolder ? 'active' : ''}`}
-            onClick={handleBack}
-          >
-            🏠 전체
-          </button>
-          {currentFolderData && (
-            <>
-              <span className="breadcrumb-separator">›</span>
-              <span className="breadcrumb-item active">
-                {currentFolderData.name}
-              </span>
-            </>
-          )}
+          {breadcrumbs.map((crumb, index) => (
+            <React.Fragment key={crumb.id}>
+              {index > 0 && <span className="breadcrumb-separator">›</span>}
+              <button 
+                className={`breadcrumb-item ${index === breadcrumbs.length - 1 ? 'active' : ''}`}
+                onClick={() => setCurrentPath(crumb.path)}
+              >
+                {crumb.name}
+              </button>
+            </React.Fragment>
+          ))}
         </nav>
 
-        {!currentFolder && (
+        {currentPath.length === 0 && (
           <div className="category-filter">
             <button 
               className={`filter-btn ${selectedCategory === 'all' ? 'active' : ''}`}
@@ -205,7 +274,7 @@ const ArchivePage = () => {
         )}
 
         <main className={`archive-content ${viewMode}`}>
-          {!currentFolder ? (
+          {currentData.type === 'folders' || currentData.type === 'subfolders' ? (
             <div className={`folder-grid ${viewMode}`}>
               {filteredContent.map((folder, index) => (
                 <div
@@ -223,7 +292,11 @@ const ArchivePage = () => {
                   </div>
                   <div className="folder-info">
                     <h3 className="folder-name">{folder.name}</h3>
-                    <p className="folder-meta">{folder.files.length}개 영상</p>
+                    <p className="folder-meta">
+                      {folder.subfolders 
+                        ? `${folder.subfolders.length}개 폴더` 
+                        : `${folder.files?.length || 0}개 영상`}
+                    </p>
                   </div>
                   <div className="folder-arrow">→</div>
                 </div>
