@@ -101,12 +101,14 @@ const ArchivePage = () => {
 
   // 폴더 클릭 핸들러
   const handleFolderClick = (folderId) => {
+    setPlayingVideo(null); // 비디오 모달 닫기
     setCurrentFolder(folderId);
     setSearchQuery('');
   };
 
   // 뒤로가기
   const handleBack = () => {
+    setPlayingVideo(null); // 비디오 모달 닫기
     setCurrentFolder(null);
     setSearchQuery('');
   };
