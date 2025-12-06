@@ -2,8 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './ArchivePage.css';
 
-// 아카이브 데이터 구조 (컴포넌트 외부에 정의하여 불필요한 재생성 방지)
-// public 폴더의 파일은 process.env.PUBLIC_URL을 통해 접근
+// 아카이브 데이터 구조 - YouTube 임베드 방식
+// youtubeId: YouTube 영상 URL에서 v= 뒤의 ID
 const archiveData = {
   folders: [
     {
@@ -12,20 +12,21 @@ const archiveData = {
       icon: '🎬',
       color: '#e2572d',
       files: [
-        { id: 'v1', name: '26', artist: '윤하', type: 'video', url: '/archive/2025/26.mp4' },
-        { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', url: '/archive/2025/Butterfly.mp4' },
-        { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', url: '/archive/2025/Drowning.mp4' },
-        { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', url: '/archive/2025/Free.mp4' },
-        { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', url: '/archive/2025/Lost Stars.mp4' },
-        { id: 'v6', name: 'She', artist: '잔나비', type: 'video', url: '/archive/2025/She.mp4' },
-        { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', url: '/archive/2025/T + Tik Tak Toe.mp4' },
-        { id: 'v8', name: '검을 현', artist: '이승윤', type: 'video', url: '/archive/2025/검을 현.mp4' },
-        { id: 'v9', name: '고백', artist: '델리스파이스', type: 'video', url: '/archive/2025/고백.mp4' },
-        { id: 'v10', name: '난춘', artist: '새소년', type: 'video', url: '/archive/2025/난춘.mp4' },
-        { id: 'v11', name: '멋진 헛간', artist: '오대천왕', type: 'video', url: '/archive/2025/멋진 헛간.mp4' },
-        { id: 'v12', name: '무제', artist: '브로큰 발렌타인', type: 'video', url: '/archive/2025/무제.mp4' },
-        { id: 'v13', name: '입춘', artist: '한로로', type: 'video', url: '/archive/2025/입춘.mp4' },
-        { id: 'v14', name: '흰수염고래', artist: 'YB', type: 'video', url: '/archive/2025/흰수염고래.mp4' },
+        { id: 'v1', name: '26', artist: '윤하', type: 'video', youtubeId: 'uNnzbRm6J2I' },
+        { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', youtubeId: 'L19YlN8dpAI' },
+        { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', youtubeId: 'cYWdqxqHrQQ' },
+        { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', youtubeId: 'zVm-MqihY50' },
+        { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: 'MHS57KkRGKc' },
+        { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: 'fjsmdd5r6F8' },
+        { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: 'TAaafu1_xQE' },
+        { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: 'lTrt0_PX8Is' },
+        { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: 'eZ1R_YIBVs0' },
+        { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: '0i6W3ySjAKE' },
+        { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: '', disabled: true },
+        { id: 'v12', name: '멋진 헛간', artist: '오대천왕', type: 'video', youtubeId: '', disabled: true },
+        { id: 'v13', name: '무제', artist: '브로큰 발렌타인', type: 'video', youtubeId: '', disabled: true },
+        { id: 'v14', name: '입춘', artist: '한로로', type: 'video', youtubeId: '', disabled: true },
+        { id: 'v15', name: '흰수염고래', artist: 'YB', type: 'video', youtubeId: '', disabled: true },
       ]
     }
   ]
@@ -34,11 +35,10 @@ const archiveData = {
 const ArchivePage = () => {
   const [currentFolder, setCurrentFolder] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [playingVideo, setPlayingVideo] = useState(null); // 현재 재생 중인 영상
+  const [playingVideo, setPlayingVideo] = useState(null);
 
-  // 파일 타입별 아이콘
   const getFileIcon = (type) => {
     switch (type) {
       case 'video': return '🎬';
@@ -50,7 +50,6 @@ const ArchivePage = () => {
     }
   };
 
-  // 파일 타입별 색상
   const getFileColor = (type) => {
     switch (type) {
       case 'video': return '#e2572d';
@@ -62,7 +61,6 @@ const ArchivePage = () => {
     }
   };
 
-  // 검색 및 필터링된 콘텐츠
   const filteredContent = useMemo(() => {
     if (currentFolder) {
       const folder = archiveData.folders.find(f => f.id === currentFolder);
@@ -86,34 +84,28 @@ const ArchivePage = () => {
     );
   }, [currentFolder, searchQuery, selectedCategory]);
 
-  // 전체 파일 수 계산
   const totalFiles = archiveData.folders.reduce((acc, folder) => acc + folder.files.length, 0);
 
-  // 영상 재생 핸들러
   const handlePlayVideo = (file) => {
     setPlayingVideo(file);
   };
 
-  // 영상 모달 닫기
   const handleCloseVideo = () => {
     setPlayingVideo(null);
   };
 
-  // 폴더 클릭 핸들러
   const handleFolderClick = (folderId) => {
-    setPlayingVideo(null); // 비디오 모달 닫기
+    setPlayingVideo(null);
     setCurrentFolder(folderId);
     setSearchQuery('');
   };
 
-  // 뒤로가기
   const handleBack = () => {
-    setPlayingVideo(null); // 비디오 모달 닫기
+    setPlayingVideo(null);
     setCurrentFolder(null);
     setSearchQuery('');
   };
 
-  // 현재 폴더 정보
   const currentFolderData = currentFolder 
     ? archiveData.folders.find(f => f.id === currentFolder) 
     : null;
@@ -121,7 +113,6 @@ const ArchivePage = () => {
   return (
     <div className="archive-page">
       <div className="archive-container">
-        {/* 헤더 */}
         <header className="archive-header">
           <div className="header-top">
             <Link to="/" className="back-home-btn">← 홈으로</Link>
@@ -129,7 +120,6 @@ const ArchivePage = () => {
             <p className="archive-subtitle">아비투스의 소중한 추억을 보관합니다</p>
           </div>
           
-          {/* 검색바 */}
           <div className="search-bar-container">
             <div className="search-bar">
               <span className="search-icon">🔍</span>
@@ -151,7 +141,6 @@ const ArchivePage = () => {
             </div>
           </div>
 
-          {/* 통계 및 뷰 모드 */}
           <div className="archive-stats">
             <div className="stats-info">
               <span className="stat-item">📁 {archiveData.folders.length}개 폴더</span>
@@ -177,7 +166,6 @@ const ArchivePage = () => {
           </div>
         </header>
 
-        {/* 브레드크럼 네비게이션 */}
         <nav className="breadcrumb">
           <button 
             className={`breadcrumb-item ${!currentFolder ? 'active' : ''}`}
@@ -195,7 +183,6 @@ const ArchivePage = () => {
           )}
         </nav>
 
-        {/* 카테고리 필터 (폴더 목록일 때만) */}
         {!currentFolder && (
           <div className="category-filter">
             <button 
@@ -217,10 +204,8 @@ const ArchivePage = () => {
           </div>
         )}
 
-        {/* 컨텐츠 영역 */}
         <main className={`archive-content ${viewMode}`}>
           {!currentFolder ? (
-            // 폴더 목록
             <div className={`folder-grid ${viewMode}`}>
               {filteredContent.map((folder, index) => (
                 <div
@@ -245,14 +230,13 @@ const ArchivePage = () => {
               ))}
             </div>
           ) : (
-            // 파일 목록
             <div className={`file-grid ${viewMode}`}>
               {filteredContent.length > 0 ? (
                 filteredContent.map((file, index) => (
                   <div
                     key={file.id}
-                    className="file-card"
-                    onClick={() => handlePlayVideo(file)}
+                    className={`file-card ${file.disabled ? 'disabled' : ''}`}
+                    onClick={() => !file.disabled && handlePlayVideo(file)}
                     style={{ 
                       '--file-color': getFileColor(file.type),
                       '--delay': `${index * 0.05}s`
@@ -260,20 +244,22 @@ const ArchivePage = () => {
                   >
                     <div className="file-icon-wrapper">
                       <span className="file-icon">{getFileIcon(file.type)}</span>
-                      <div className="play-overlay">
-                        <span className="play-icon">▶</span>
-                      </div>
+                      {!file.disabled && (
+                        <div className="play-overlay">
+                          <span className="play-icon">▶</span>
+                        </div>
+                      )}
                     </div>
                     <div className="file-info">
                       <h4 className="file-name">{file.name}</h4>
                       <div className="file-meta">
                         <span className="file-artist">🎤 {file.artist}</span>
-                        <span className="file-type">{file.type.toUpperCase()}</span>
+                        <span className="file-type">{file.disabled ? '준비중' : file.type.toUpperCase()}</span>
                       </div>
                     </div>
                     <div className="play-btn">
-                      <span className="play-btn-icon">▶</span>
-                      <span className="play-btn-text">재생</span>
+                      <span className="play-btn-icon">{file.disabled ? '🔒' : '▶'}</span>
+                      <span className="play-btn-text">{file.disabled ? '준비중' : '재생'}</span>
                     </div>
                   </div>
                 ))
@@ -287,14 +273,13 @@ const ArchivePage = () => {
           )}
         </main>
 
-        {/* 푸터 */}
         <footer className="archive-footer">
           <p>⚠️ 모든 자료의 저작권은 HABITUS에 있습니다.</p>
           <p>무단 배포 및 상업적 이용을 금지합니다.</p>
         </footer>
       </div>
 
-      {/* 비디오 플레이어 모달 */}
+      {/* YouTube 임베드 모달 */}
       {playingVideo && (
         <div className="video-modal-overlay" onClick={handleCloseVideo}>
           <div className="video-modal" onClick={(e) => e.stopPropagation()}>
@@ -304,15 +289,15 @@ const ArchivePage = () => {
               <p className="video-artist">🎤 {playingVideo.artist}</p>
             </div>
             <div className="video-wrapper">
-              <video
+              <iframe
                 key={playingVideo.id}
-                controls
-                autoPlay
+                src={`https://www.youtube.com/embed/${playingVideo.youtubeId}?autoplay=1&rel=0`}
+                title={playingVideo.name}
                 className="video-player"
-              >
-                <source src={playingVideo.url} type="video/mp4" />
-                브라우저가 비디오 재생을 지원하지 않습니다.
-              </video>
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
             </div>
           </div>
         </div>
