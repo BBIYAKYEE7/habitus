@@ -48,7 +48,7 @@ const SetlistPage = () => {
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
       }
     } else {
-      return '공연이 시작되었습니다!';
+      return '공연이 종료되었습니다';
     }
   }, [concertDate]);
 
@@ -259,7 +259,7 @@ const SetlistPage = () => {
             📅 2025년 12월 3일 (화) 20:30 📍 문화스포츠관 215호
           </p>
           <div className="countdown-container">
-            <span className="countdown-timer">{timeLeft}</span>
+            <span className={`countdown-timer ${timeLeft === '공연이 종료되었습니다' ? 'ended' : ''}`}>{timeLeft}</span>
           </div>
         </header>
 

@@ -96,6 +96,9 @@ function MainPage() {
             <Link to="/archive" className="Nav__link">
               아카이브
             </Link>
+            <Link to="/concerts" className="Nav__link">
+              정기공연
+            </Link>
           </nav>
         </div>
       </div>

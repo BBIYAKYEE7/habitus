@@ -48,8 +48,9 @@ const ConcertInfoPage = () => {
     <div className="concert-info-page">
       <div className="concert-info-container">
         <header className="concert-info-header">
-          <Link to="/setlist" className="back-button">셋리스트 보기</Link>
+          <Link to="/concerts" className="back-button">← 정기공연 목록</Link>
           <h1>🎫 HABITUS 정기공연 정보</h1>
+          <Link to="/setlist" className="setlist-button">셋리스트 보기</Link>
         </header>
 
         <div className="concert-info-content">

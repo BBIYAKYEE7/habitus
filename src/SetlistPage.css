@@ -78,6 +78,14 @@
   text-align: center;
 }
 
+.countdown-timer.ended {
+  font-family: inherit;
+  font-size: 1.2rem;
+  color: #b7ab9a;
+  text-shadow: none;
+  letter-spacing: 0;
+}
+
 /* Side Tabs */
 .side-tabs {
   display: flex;
@@ -336,9 +344,10 @@
 
 /* Song Thumbnails - 연속 슬라이드 */
 .thumbnails-wrapper {
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: visible;
   margin-bottom: 40px;
-  padding: 0 20px; /* 양쪽 여백 추가 */
+  padding: 10px 20px; /* 상단 여백 추가로 호버 시 잘림 방지 */
 }
 
 .thumbnails-slider {
