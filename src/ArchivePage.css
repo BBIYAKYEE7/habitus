@@ -1,16 +1,39 @@
 /* ===== Archive Page Styles ===== */
 
+/* Page enter animation */
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .archive-page {
   min-height: 100vh;
   background: var(--bg);
   color: var(--fg);
   font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  animation: pageFadeIn 0.4s ease-out;
 }
 
 .archive-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 24px 20px;
+  animation: pageSlideIn 0.5s ease-out;
 }
 
 /* ===== Header ===== */

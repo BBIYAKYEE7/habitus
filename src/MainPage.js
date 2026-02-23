@@ -1,11 +1,34 @@
 import { useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import bannerImg from './image/banner.png';
+import recruitImg from './image/recurit.jpg';
 import './App.css';
 
+// 세션별 멤버 데이터 (실제 이름으로 수정해주세요)
+const sessionMembers = {
+  vocal: ['김하영', '윤주빈', '김동현', '변준영', '맹지은', '소형석', '최민성'],
+  guitar: ['김경렬', '김재윤', '변준영', '최민성'],
+  bass: ['김민서', '김하영', '현민아', '김도담'],
+  drum: ['고준호', '김재윤', '이서연', '소형석'],
+  keyboard: ['김하영', '김도담', '김동현','최정민', '소형석'],
+};
+
 function MainPage() {
+  const navigate = useNavigate();
   const sectionIds = useMemo(() => ['about', 'sessions', 'apply'], []);
   const snapOrder = useMemo(() => ['hero', ...sectionIds], [sectionIds]);
   const [activeId, setActiveId] = useState('about');
+  const [expandedSession, setExpandedSession] = useState(null);
+  const [showRecruitPopup, setShowRecruitPopup] = useState(true);
+
+  const toggleSession = (session) => {
+    setExpandedSession(expandedSession === session ? null : session);
+  };
+
+  const handlePopupClick = () => {
+    setShowRecruitPopup(false);
+    navigate('/recruit');
+  };
 
   useEffect(() => {
     const sections = Array.from(document.querySelectorAll('.Section'));
@@ -70,16 +93,22 @@ function MainPage() {
                 {id === 'apply' && '지원'}
               </button>
             ))}
+            <Link to="/archive" className="Nav__link">
+              아카이브
+            </Link>
           </nav>
         </div>
       </div>
 
       <header className="Hero Section Section--hero" id="hero" style={heroStyle}>
-        <div className="Hero__badge">모집 종료</div>
+        <div className="Hero__badge Hero__badge--active">모집 중</div>
         <h1 className="Hero__title">HABITUS</h1>
         <p className="Hero__subtitle">공공정책대학 밴드 동아리</p>
-        <p className="Hero__period">9/1 (Mon) ~ 9/12 (Fri) · 오디션 ~ 9/13 (Sat)</p>
-        <p className="Hero__note">현재 신입 선발이 종료되었습니다.</p>
+        <p className="Hero__period">2/23 (월) ~ 3/13 (금) · 오디션 3/16~20</p>
+        <p className="Hero__note Hero__note--active">신입 부원을 모집합니다!</p>
+        <Link to="/recruit" className="Hero__recruit-btn">
+          모집 공고 보기
+        </Link>
       </header>
 
       <main className="Main" role="main">
@@ -98,14 +127,63 @@ function MainPage() {
         </section>
 
         <section id="sessions" className="Section">
-          <h2>모집 세션</h2>
+          <h2>세션 소개</h2>
           <div className="Grid">
-            <div className="Card">보컬 (남/여)</div>
-            <div className="Card">일렉기타</div>
-            <div className="Card">베이스기타</div>
-            <div className="Card">드럼</div>
-            <div className="Card">키보드</div>
-            <div className="Card">매니저</div>
+            <div 
+              className={`Card Card--clickable ${expandedSession === 'vocal' ? 'Card--expanded' : ''}`}
+              onClick={() => toggleSession('vocal')}
+            >
+              <span className="Card__title">보컬</span>
+              <div className={`Card__members ${expandedSession === 'vocal' ? 'is-open' : ''}`}>
+                {sessionMembers.vocal.map((name, i) => (
+                  <span key={i} className="Card__member">{name}</span>
+                ))}
+              </div>
+            </div>
+            <div 
+              className={`Card Card--clickable ${expandedSession === 'guitar' ? 'Card--expanded' : ''}`}
+              onClick={() => toggleSession('guitar')}
+            >
+              <span className="Card__title">일렉기타</span>
+              <div className={`Card__members ${expandedSession === 'guitar' ? 'is-open' : ''}`}>
+                {sessionMembers.guitar.map((name, i) => (
+                  <span key={i} className="Card__member">{name}</span>
+                ))}
+              </div>
+            </div>
+            <div 
+              className={`Card Card--clickable ${expandedSession === 'bass' ? 'Card--expanded' : ''}`}
+              onClick={() => toggleSession('bass')}
+            >
+              <span className="Card__title">베이스기타</span>
+              <div className={`Card__members ${expandedSession === 'bass' ? 'is-open' : ''}`}>
+                {sessionMembers.bass.map((name, i) => (
+                  <span key={i} className="Card__member">{name}</span>
+                ))}
+              </div>
+            </div>
+            <div 
+              className={`Card Card--clickable ${expandedSession === 'drum' ? 'Card--expanded' : ''}`}
+              onClick={() => toggleSession('drum')}
+            >
+              <span className="Card__title">드럼</span>
+              <div className={`Card__members ${expandedSession === 'drum' ? 'is-open' : ''}`}>
+                {sessionMembers.drum.map((name, i) => (
+                  <span key={i} className="Card__member">{name}</span>
+                ))}
+              </div>
+            </div>
+            <div 
+              className={`Card Card--clickable ${expandedSession === 'keyboard' ? 'Card--expanded' : ''}`}
+              onClick={() => toggleSession('keyboard')}
+            >
+              <span className="Card__title">키보드</span>
+              <div className={`Card__members ${expandedSession === 'keyboard' ? 'is-open' : ''}`}>
+                {sessionMembers.keyboard.map((name, i) => (
+                  <span key={i} className="Card__member">{name}</span>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -114,13 +192,12 @@ function MainPage() {
           <p>구글폼 작성 후, 오디션 진행</p>
           <div className="Actions">
             <a
-              className="Button Button--disabled"
-              aria-disabled="true"
-              href="https://forms.gle/cTJ6TMdN3PER54V87"
-              onClick={(e) => e.preventDefault()}
-              title="모집이 종료되었습니다"
+              className="Button Button--primary"
+              href="https://forms.gle/pKKXoF4TCYLpTJRT9"
+              target="_blank"
+              rel="noreferrer"
             >
-              지원 구글폼 (마감)
+              지원 구글폼
             </a>
             <a
               className="Button"
@@ -165,7 +242,7 @@ function MainPage() {
                 <path d="M23.5 7.5s-.2-1.6-.8-2.3c-.8-.9-1.7-.9-2.1-1C17.7 4 12 4 12 4h0s-5.7 0-8.6.2c-.4.1-1.3.1-2.1 1-.6.7-.8 2.3-.8 2.3S0 9.4 0 11.2v1.6c0 1.8.2 3.7.2 3.7s.2 1.6.8 2.3c.8.9 1.8.9 2.3 1 1.7.2 7.2.2 7.2.2s5.7 0 8.6-.2c.4-.1 1.3-.1 2.1-1 .6-.7.8-2.3.8-2.3s.2-1.8.2-3.7v-1.6c0-1.8-.2-3.7-.2-3.7zM9.5 14.8V7.9l6.4 3.45-6.4 3.45z" fill="currentColor"/>
               </svg>
             </a>
-            <a className="IconBtn is-disabled" href="https://forms.gle/cTJ6TMdN3PER54V87" onClick={(e) => e.preventDefault()} aria-label="구글폼 마감">
+            <a className="IconBtn" href="https://forms.gle/pKKXoF4TCYLpTJRT9" target="_blank" rel="noreferrer" aria-label="지원 구글폼">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6 2h7l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm7 1.5V8h4.5" stroke="currentColor" stroke-width="1.8"/>
                 <rect x="7" y="11" width="10" height="1.8" fill="currentColor"/>
@@ -178,6 +255,19 @@ function MainPage() {
           <small>© {new Date().getFullYear()} HABITUS, KU Sejong</small>
         </div>
       </footer>
+
+      {/* 모집 팝업 */}
+      {showRecruitPopup && (
+        <div className="Popup__overlay" onClick={() => setShowRecruitPopup(false)}>
+          <div className="Popup__content" onClick={(e) => e.stopPropagation()}>
+            <button className="Popup__close" onClick={() => setShowRecruitPopup(false)}>×</button>
+            <div className="Popup__image-container" onClick={handlePopupClick}>
+              <img src={recruitImg} alt="신입 모집 공고" className="Popup__image" />
+              <div className="Popup__image-hint">클릭하여 자세히 보기</div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

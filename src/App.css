@@ -57,6 +57,8 @@
   padding: 6px 2px;
   cursor: pointer;
   border-bottom: 2px solid transparent;
+  text-decoration: none;
+  font: inherit;
 }
 .Nav__link:hover { color: var(--fg); }
 .Nav__link.is-active { color: var(--fg); border-bottom-color: var(--fg); }
@@ -135,6 +137,48 @@
   margin-top: 8px;
   color: var(--accent);
   font-weight: 600;
+}
+
+.Hero__badge--active {
+  background: linear-gradient(135deg, var(--accent), #ff6b3d);
+  color: white;
+  border: none;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(226, 87, 45, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(226, 87, 45, 0); }
+}
+
+.Hero__note--active {
+  color: #4ade80;
+}
+
+.Hero__recruit-btn {
+  margin-top: 24px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--accent), #ff6b3d);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(226, 87, 45, 0.3);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.Hero__recruit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(226, 87, 45, 0.4);
+  background: linear-gradient(135deg, #ff6b3d, var(--accent));
+}
+
+.Hero__recruit-btn:active {
+  transform: translateY(0);
 }
 
 .Hero__concert-button {
@@ -223,6 +267,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 16px;
+  align-items: start;
 }
 
 .Card {
@@ -231,6 +276,56 @@
   padding: 16px;
   border-radius: 8px;
   text-align: center;
+}
+
+.Card--clickable {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.Card--clickable:hover {
+  background: var(--elevated);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.Card--expanded {
+  background: var(--elevated);
+  border-color: var(--accent);
+}
+
+.Card__title {
+  font-weight: 600;
+  display: block;
+}
+
+.Card__members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+  margin-top: 0;
+}
+
+.Card__members.is-open {
+  max-height: 200px;
+  opacity: 1;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+
+.Card__member {
+  background: var(--bg);
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  color: var(--muted);
+  border: 1px solid var(--border);
 }
 
 .Actions {
@@ -308,4 +403,167 @@
   .Grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+}
+
+/* ===== Recruit Popup ===== */
+.Popup__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: popupFadeIn 0.3s ease;
+  padding: 20px;
+}
+
+@keyframes popupFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popupSlideIn {
+  from { 
+    opacity: 0; 
+    transform: scale(0.9) translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: scale(1) translateY(0); 
+  }
+}
+
+.Popup__content {
+  background: var(--surface);
+  border-radius: 16px;
+  max-width: 500px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  animation: popupSlideIn 0.4s ease;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.Popup__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.Popup__close:hover {
+  background: var(--accent);
+  transform: scale(1.1);
+}
+
+.Popup__image-container {
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.Popup__image {
+  width: 100%;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.Popup__image-container:hover .Popup__image {
+  transform: scale(1.02);
+}
+
+.Popup__image-hint {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.Popup__details {
+  padding: 32px 24px;
+  animation: popupSlideIn 0.3s ease;
+}
+
+.Popup__title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 24px;
+  text-align: center;
+  color: var(--fg);
+}
+
+.Popup__info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.Popup__info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.Popup__label {
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.Popup__value {
+  font-size: 15px;
+  color: var(--fg);
+}
+
+.Popup__actions {
+  display: flex;
+  gap: 12px;
+}
+
+.Popup__actions .Button {
+  flex: 1;
+  text-align: center;
+  padding: 14px 20px;
+  font-weight: 600;
+}
+
+.Button--primary {
+  background: linear-gradient(135deg, var(--accent), #ff6b3d);
+  border: none;
+  color: white;
+}
+
+.Button--primary:hover {
+  background: linear-gradient(135deg, #ff6b3d, var(--accent));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(226, 87, 45, 0.4);
 }
