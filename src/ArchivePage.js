@@ -150,18 +150,6 @@ const ArchivePage = () => {
     setSearchQuery('');
   };
 
-  const handleBack = () => {
-    setPlayingVideo(null);
-    setCurrentPath(currentPath.slice(0, -1));
-    setSearchQuery('');
-  };
-
-  const handleGoHome = () => {
-    setPlayingVideo(null);
-    setCurrentPath([]);
-    setSearchQuery('');
-  };
-
   // 브레드크럼 경로 정보
   const getBreadcrumbs = () => {
     const crumbs = [{ id: 'home', name: '🏠 전체', path: [] }];
