@@ -2,9 +2,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import bannerImg from './image/banner.png';
 import recruitImg from './image/recurit.jpg';
+import posterImg from './image/poster.png';
 import './App.css';
 
-// 세션별 멤버 데이터 (실제 이름으로 수정해주세요)
+// 세션별 멤버 데이터
 const sessionMembers = {
   vocal: ['김하영', '윤주빈', '김동현', '변준영', '맹지은', '소형석', '최민성'],
   guitar: ['김경렬', '김재윤', '변준영', '최민성'],
@@ -13,13 +14,108 @@ const sessionMembers = {
   keyboard: ['김하영', '김도담', '김동현','최정민', '소형석'],
 };
 
+// 번역 데이터
+const translations = {
+  ko: {
+    nav: { about: '소개', sessions: '세션', concerts: '정기공연', apply: '지원', archive: '아카이브' },
+    hero: {
+      badge: '모집 중',
+      subtitle: '공공정책대학 밴드 동아리',
+      period: '2/23 (월) ~ 3/13 (금) · 오디션 3/16~20',
+      note: '신입 부원을 모집합니다!',
+      recruitBtn: '모집 공고 보기',
+    },
+    about: {
+      title: '아비투스는',
+      desc: '부원 간의 끈끈한 우정을 중심으로 음악적으로 성장하고, 잊지 못할 추억을 만들어가는 고려대학교 세종캠퍼스 공공정책대학 소속 밴드 동아리입니다.',
+      bullets: [
+        '대학의 낭만을 느끼고 싶다면',
+        '끈끈한 선후배 관계를 원한다면',
+        '음악에 대한 열정이 가득하다면',
+        '독특한 스펙이 필요하다면',
+      ],
+    },
+    sessions: {
+      title: '세션 소개',
+      vocal: '보컬', guitar: '일렉기타', bass: '베이스', drum: '드럼', keyboard: '키보드',
+    },
+    concerts: {
+      title: '🎸 정기공연',
+      intro: 'HABITUS의 정기공연 기록입니다. 포스터를 클릭하면 상세 정보를 확인할 수 있습니다.',
+      badge: '종료',
+      concertTitle: '2025 겨울 정기공연',
+      viewMore: '자세히 보기',
+    },
+    apply: {
+      title: '지원 방법',
+      desc: '구글폼 작성 후, 오디션 진행',
+      formBtn: '지원 구글폼',
+      instaBtn: '인스타그램 보기',
+    },
+    footer: {
+      contact: 'Contact & Social',
+    },
+    popup: {
+      hint: '클릭하여 자세히 보기',
+    },
+  },
+  en: {
+    nav: { about: 'About', sessions: 'Sessions', concerts: 'Concerts', apply: 'Apply', archive: 'Archive' },
+    hero: {
+      badge: 'Recruiting',
+      subtitle: 'College of Public Policy Band Club',
+      period: 'Feb 23 - Mar 13 · Audition Mar 16-20',
+      note: 'We are recruiting new members!',
+      recruitBtn: 'View Recruitment',
+    },
+    about: {
+      title: 'About HABITUS',
+      desc: 'HABITUS is a band club under the College of Public Policy at Korea University Sejong Campus, where members grow musically through strong friendships and create unforgettable memories.',
+      bullets: [
+        'If you want to feel the romance of college life',
+        'If you want close senior-junior relationships',
+        'If you are passionate about music',
+        'If you need unique experiences',
+      ],
+    },
+    sessions: {
+      title: 'Sessions',
+      vocal: 'Vocal', guitar: 'Electric Guitar', bass: 'Bass', drum: 'Drum', keyboard: 'Keyboard',
+    },
+    concerts: {
+      title: '🎸 Concerts',
+      intro: 'HABITUS concert archive. Click on a poster to view details.',
+      badge: 'Ended',
+      concertTitle: '2025 Winter Concert',
+      viewMore: 'View Details',
+    },
+    apply: {
+      title: 'How to Apply',
+      desc: 'Fill out the Google Form, then audition',
+      formBtn: 'Application Form',
+      instaBtn: 'Instagram',
+    },
+    footer: {
+      contact: 'Contact & Social',
+    },
+    popup: {
+      hint: 'Click to view details',
+    },
+  },
+};
+
 function MainPage() {
   const navigate = useNavigate();
-  const sectionIds = useMemo(() => ['about', 'sessions', 'apply'], []);
+  const sectionIds = useMemo(() => ['about', 'sessions', 'concerts', 'apply'], []);
   const snapOrder = useMemo(() => ['hero', ...sectionIds], [sectionIds]);
   const [activeId, setActiveId] = useState('about');
   const [expandedSession, setExpandedSession] = useState(null);
   const [showRecruitPopup, setShowRecruitPopup] = useState(true);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [lang, setLang] = useState(() => localStorage.getItem('lang') || 'ko');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  
+  const t = translations[lang];
 
   const toggleSession = (session) => {
     setExpandedSession(expandedSession === session ? null : session);
@@ -28,6 +124,18 @@ function MainPage() {
   const handlePopupClick = () => {
     setShowRecruitPopup(false);
     navigate('/recruit');
+  };
+
+  const toggleLang = () => {
+    const newLang = lang === 'ko' ? 'en' : 'ko';
+    setLang(newLang);
+    localStorage.setItem('lang', newLang);
+  };
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   useEffect(() => {
@@ -76,67 +184,113 @@ function MainPage() {
     backgroundRepeat: 'no-repeat',
   };
   return (
-    <div className="SiteRoot">
+    <div className={`SiteRoot ${theme === 'light' ? 'light-mode' : ''}`}>
       <div className="TopBar">
         <div className="TopBar__inner">
           <div className="Brand" onClick={() => scrollTo('about')}>HABITUS</div>
           <div className="NavSpacer" />
-          <nav className="Nav" aria-label="상단 내비게이션">
+          
+          {/* Desktop Nav */}
+          <nav className="Nav Nav--desktop" aria-label="상단 내비게이션">
             {sectionIds.map((id) => (
               <button
                 key={id}
                 className={`Nav__link ${activeId === id ? 'is-active' : ''}`}
                 onClick={() => scrollTo(id)}
               >
-                {id === 'about' && '소개'}
-                {id === 'sessions' && '세션'}
-                {id === 'apply' && '지원'}
+                {t.nav[id]}
               </button>
             ))}
             <Link to="/archive" className="Nav__link">
-              아카이브
-            </Link>
-            <Link to="/concerts" className="Nav__link">
-              정기공연
+              {t.nav.archive}
             </Link>
           </nav>
+
+          {/* Settings Buttons */}
+          <div className="SettingsBar">
+            <button className="SettingsBtn" onClick={toggleLang} aria-label="언어 변경">
+              {lang === 'ko' ? 'EN' : '한'}
+            </button>
+            <button className="SettingsBtn" onClick={toggleTheme} aria-label="테마 변경">
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+          </div>
+
+          {/* Mobile Hamburger Button */}
+          <button 
+            className={`HamburgerBtn ${mobileMenuOpen ? 'is-open' : ''}`}
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label="메뉴 열기"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </div>
 
+      {/* Mobile Nav Overlay */}
+      <div className={`MobileNav ${mobileMenuOpen ? 'is-open' : ''}`}>
+        <nav className="MobileNav__inner">
+          {sectionIds.map((id) => (
+            <button
+              key={id}
+              className={`MobileNav__link ${activeId === id ? 'is-active' : ''}`}
+              onClick={() => { scrollTo(id); setMobileMenuOpen(false); }}
+            >
+              {t.nav[id]}
+            </button>
+          ))}
+          <Link 
+            to="/archive" 
+            className="MobileNav__link"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {t.nav.archive}
+          </Link>
+          
+          {/* Mobile Settings */}
+          <div className="MobileNav__settings">
+            <button className="SettingsBtn SettingsBtn--large" onClick={toggleLang}>
+              {lang === 'ko' ? 'English' : '한국어'}
+            </button>
+            <button className="SettingsBtn SettingsBtn--large" onClick={toggleTheme}>
+              {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
+            </button>
+          </div>
+        </nav>
+      </div>
+
       <header className="Hero Section Section--hero" id="hero" style={heroStyle}>
-        <div className="Hero__badge Hero__badge--active">모집 중</div>
+        <div className="Hero__badge Hero__badge--active">{t.hero.badge}</div>
         <h1 className="Hero__title">HABITUS</h1>
-        <p className="Hero__subtitle">공공정책대학 밴드 동아리</p>
-        <p className="Hero__period">2/23 (월) ~ 3/13 (금) · 오디션 3/16~20</p>
-        <p className="Hero__note Hero__note--active">신입 부원을 모집합니다!</p>
+        <p className="Hero__subtitle">{t.hero.subtitle}</p>
+        <p className="Hero__period">{t.hero.period}</p>
+        <p className="Hero__note Hero__note--active">{t.hero.note}</p>
         <Link to="/recruit" className="Hero__recruit-btn">
-          모집 공고 보기
+          {t.hero.recruitBtn}
         </Link>
       </header>
 
       <main className="Main" role="main">
         <section id="about" className="Section">
-          <h2>아비투스는</h2>
-          <p>
-            부원 간의 끈끈한 우정을 중심으로 음악적으로 성장하고, 잊지 못할 추억을
-            만들어가는 고려대학교 세종캠퍼스 공공정책대학 소속 밴드 동아리입니다.
-          </p>
+          <h2>{t.about.title}</h2>
+          <p>{t.about.desc}</p>
           <ul className="Bullets">
-            <li>대학의 낭만을 느끼고 싶다면</li>
-            <li>끈끈한 선후배 관계를 원한다면</li>
-            <li>음악에 대한 열정이 가득하다면</li>
-            <li>독특한 스펙이 필요하다면</li>
+            {t.about.bullets.map((bullet, i) => (
+              <li key={i}>{bullet}</li>
+            ))}
           </ul>
         </section>
 
         <section id="sessions" className="Section">
-          <h2>세션 소개</h2>
+          <h2>{t.sessions.title}</h2>
           <div className="Grid">
             <div 
               className={`Card Card--clickable ${expandedSession === 'vocal' ? 'Card--expanded' : ''}`}
               onClick={() => toggleSession('vocal')}
             >
-              <span className="Card__title">보컬</span>
+              <span className="Card__title">{t.sessions.vocal}</span>
               <div className={`Card__members ${expandedSession === 'vocal' ? 'is-open' : ''}`}>
                 {sessionMembers.vocal.map((name, i) => (
                   <span key={i} className="Card__member">{name}</span>
@@ -147,7 +301,7 @@ function MainPage() {
               className={`Card Card--clickable ${expandedSession === 'guitar' ? 'Card--expanded' : ''}`}
               onClick={() => toggleSession('guitar')}
             >
-              <span className="Card__title">일렉기타</span>
+              <span className="Card__title">{t.sessions.guitar}</span>
               <div className={`Card__members ${expandedSession === 'guitar' ? 'is-open' : ''}`}>
                 {sessionMembers.guitar.map((name, i) => (
                   <span key={i} className="Card__member">{name}</span>
@@ -158,7 +312,7 @@ function MainPage() {
               className={`Card Card--clickable ${expandedSession === 'bass' ? 'Card--expanded' : ''}`}
               onClick={() => toggleSession('bass')}
             >
-              <span className="Card__title">베이스기타</span>
+              <span className="Card__title">{t.sessions.bass}</span>
               <div className={`Card__members ${expandedSession === 'bass' ? 'is-open' : ''}`}>
                 {sessionMembers.bass.map((name, i) => (
                   <span key={i} className="Card__member">{name}</span>
@@ -169,7 +323,7 @@ function MainPage() {
               className={`Card Card--clickable ${expandedSession === 'drum' ? 'Card--expanded' : ''}`}
               onClick={() => toggleSession('drum')}
             >
-              <span className="Card__title">드럼</span>
+              <span className="Card__title">{t.sessions.drum}</span>
               <div className={`Card__members ${expandedSession === 'drum' ? 'is-open' : ''}`}>
                 {sessionMembers.drum.map((name, i) => (
                   <span key={i} className="Card__member">{name}</span>
@@ -180,7 +334,7 @@ function MainPage() {
               className={`Card Card--clickable ${expandedSession === 'keyboard' ? 'Card--expanded' : ''}`}
               onClick={() => toggleSession('keyboard')}
             >
-              <span className="Card__title">키보드</span>
+              <span className="Card__title">{t.sessions.keyboard}</span>
               <div className={`Card__members ${expandedSession === 'keyboard' ? 'is-open' : ''}`}>
                 {sessionMembers.keyboard.map((name, i) => (
                   <span key={i} className="Card__member">{name}</span>
@@ -190,9 +344,32 @@ function MainPage() {
           </div>
         </section>
 
+        <section id="concerts" className="Section Section--concerts">
+          <h2>{t.concerts.title}</h2>
+          <div className="concerts-intro-box">
+            <p>{t.concerts.intro}</p>
+          </div>
+          <div className="concerts-grid">
+            <Link to="/concert-info" className="concert-card">
+              <div className="concert-poster-wrapper">
+                <span className="concert-badge concert-badge--completed">{t.concerts.badge}</span>
+                <img src={posterImg} alt={t.concerts.concertTitle} className="concert-poster-img" />
+                <div className="concert-overlay">
+                  <span>{t.concerts.viewMore}</span>
+                </div>
+              </div>
+              <div className="concert-info">
+                <h3 className="concert-title">{t.concerts.concertTitle}</h3>
+                <p className="concert-date">📅 2025.12.03</p>
+                <p className="concert-location">📍 {lang === 'ko' ? '문화스포츠관 215호' : 'Culture & Sports Hall 215'}</p>
+              </div>
+            </Link>
+          </div>
+        </section>
+
         <section id="apply" className="Section">
-          <h2>지원 방법</h2>
-          <p>구글폼 작성 후, 오디션 진행</p>
+          <h2>{t.apply.title}</h2>
+          <p>{t.apply.desc}</p>
           <div className="Actions">
             <a
               className="Button Button--primary"
@@ -200,7 +377,7 @@ function MainPage() {
               target="_blank"
               rel="noreferrer"
             >
-              지원 구글폼
+              {t.apply.formBtn}
             </a>
             <a
               className="Button"
@@ -208,7 +385,7 @@ function MainPage() {
               target="_blank"
               rel="noreferrer"
             >
-              인스타그램 보기
+              {t.apply.instaBtn}
             </a>
           </div>
         </section>
@@ -228,7 +405,7 @@ function MainPage() {
 
       <footer className="Footer" id="contact">
         <div className="Footer__inner">
-          <div className="Footer__title">Contact & Social</div>
+          <div className="Footer__title">{t.footer.contact}</div>
           <div className="IconRow">
             <a className="IconBtn" href="tel:01031030435" aria-label="전화">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -265,8 +442,8 @@ function MainPage() {
           <div className="Popup__content" onClick={(e) => e.stopPropagation()}>
             <button className="Popup__close" onClick={() => setShowRecruitPopup(false)}>×</button>
             <div className="Popup__image-container" onClick={handlePopupClick}>
-              <img src={recruitImg} alt="신입 모집 공고" className="Popup__image" />
-              <div className="Popup__image-hint">클릭하여 자세히 보기</div>
+              <img src={recruitImg} alt={lang === 'ko' ? '신입 모집 공고' : 'Recruitment Notice'} className="Popup__image" />
+              <div className="Popup__image-hint">{t.popup.hint}</div>
             </div>
           </div>
         </div>

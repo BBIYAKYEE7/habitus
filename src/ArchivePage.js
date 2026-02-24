@@ -2,6 +2,45 @@ import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './ArchivePage.css';
 
+const translations = {
+  ko: {
+    backBtn: '← 홈으로',
+    title: '📂 HABITUS Archive',
+    subtitle: '아비투스의 소중한 추억을 보관합니다',
+    searchPlaceholder: '곡명 또는 아티스트 검색...',
+    folders: '개 폴더',
+    videos: '개 영상',
+    gridView: '그리드 보기',
+    listView: '리스트 보기',
+    home: '🏠 전체',
+    all: '전체',
+    preparing: '준비중',
+    play: '재생',
+    noResults: '검색 결과가 없습니다',
+    original: '원곡',
+    footerNotice1: '⚠️ 모든 자료의 저작권은 HABITUS에 있습니다.',
+    footerNotice2: '무단 배포 및 상업적 이용을 금지합니다.',
+  },
+  en: {
+    backBtn: '← Home',
+    title: '📂 HABITUS Archive',
+    subtitle: 'Preserving precious memories of HABITUS',
+    searchPlaceholder: 'Search by song or artist...',
+    folders: ' folders',
+    videos: ' videos',
+    gridView: 'Grid View',
+    listView: 'List View',
+    home: '🏠 All',
+    all: 'All',
+    preparing: 'Coming Soon',
+    play: 'Play',
+    noResults: 'No results found',
+    original: 'Original',
+    footerNotice1: '⚠️ All materials are copyrighted by HABITUS.',
+    footerNotice2: 'Unauthorized distribution and commercial use are prohibited.',
+  },
+};
+
 // 아카이브 데이터 구조 - YouTube 임베드 방식
 // 중첩 폴더 구조 지원: folders > subfolders > files
 const archiveData = {
@@ -69,6 +108,8 @@ const ArchivePage = () => {
   const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [playingVideo, setPlayingVideo] = useState(null);
+  const [lang] = useState(() => localStorage.getItem('lang') || 'ko');
+  const t = translations[lang];
 
   const getFileIcon = (type) => {
     switch (type) {
@@ -152,7 +193,7 @@ const ArchivePage = () => {
 
   // 브레드크럼 경로 정보
   const getBreadcrumbs = () => {
-    const crumbs = [{ id: 'home', name: '🏠 전체', path: [] }];
+    const crumbs = [{ id: 'home', name: t.home, path: [] }];
     
     if (currentPath.length >= 1) {
       const folder = archiveData.folders.find(f => f.id === currentPath[0]);
@@ -175,9 +216,9 @@ const ArchivePage = () => {
       <div className="archive-container">
         <header className="archive-header">
           <div className="header-top">
-            <Link to="/" className="back-home-btn">← 홈으로</Link>
-            <h1>📂 HABITUS Archive</h1>
-            <p className="archive-subtitle">아비투스의 소중한 추억을 보관합니다</p>
+            <Link to="/" className="back-home-btn">{t.backBtn}</Link>
+            <h1>{t.title}</h1>
+            <p className="archive-subtitle">{t.subtitle}</p>
           </div>
           
           <div className="search-bar-container">
@@ -185,7 +226,7 @@ const ArchivePage = () => {
               <span className="search-icon">🔍</span>
               <input
                 type="text"
-                placeholder="곡명 또는 아티스트 검색..."
+                placeholder={t.searchPlaceholder}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="search-input"
@@ -203,22 +244,22 @@ const ArchivePage = () => {
 
           <div className="archive-stats">
             <div className="stats-info">
-              <span className="stat-item">📁 {archiveData.folders.length}개 폴더</span>
+              <span className="stat-item">📁 {archiveData.folders.length}{t.folders}</span>
               <span className="stat-divider">•</span>
-              <span className="stat-item">🎬 {totalFiles}개 영상</span>
+              <span className="stat-item">🎬 {totalFiles}{t.videos}</span>
             </div>
             <div className="view-controls">
               <button 
                 className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
                 onClick={() => setViewMode('grid')}
-                title="그리드 보기"
+                title={t.gridView}
               >
                 <span className="view-icon">▦</span>
               </button>
               <button 
                 className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
                 onClick={() => setViewMode('list')}
-                title="리스트 보기"
+                title={t.listView}
               >
                 <span className="view-icon">☰</span>
               </button>
@@ -246,7 +287,7 @@ const ArchivePage = () => {
               className={`filter-btn ${selectedCategory === 'all' ? 'active' : ''}`}
               onClick={() => setSelectedCategory('all')}
             >
-              전체
+              {t.all}
             </button>
             {archiveData.folders.map(folder => (
               <button
@@ -315,19 +356,19 @@ const ArchivePage = () => {
                       <h4 className="file-name">{file.name}</h4>
                       <div className="file-meta">
                         <span className="file-artist">🎤 {file.artist}</span>
-                        <span className="file-type">{file.disabled ? '준비중' : file.type.toUpperCase()}</span>
+                        <span className="file-type">{file.disabled ? t.preparing : file.type.toUpperCase()}</span>
                       </div>
                     </div>
                     <div className="play-btn">
                       <span className="play-btn-icon">{file.disabled ? '🔒' : '▶'}</span>
-                      <span className="play-btn-text">{file.disabled ? '준비중' : '재생'}</span>
+                      <span className="play-btn-text">{file.disabled ? t.preparing : t.play}</span>
                     </div>
                   </div>
                 ))
               ) : (
                 <div className="empty-state">
                   <span className="empty-icon">📭</span>
-                  <p>검색 결과가 없습니다</p>
+                  <p>{t.noResults}</p>
                 </div>
               )}
             </div>
@@ -335,8 +376,8 @@ const ArchivePage = () => {
         </main>
 
         <footer className="archive-footer">
-          <p>⚠️ 모든 자료의 저작권은 HABITUS에 있습니다.</p>
-          <p>무단 배포 및 상업적 이용을 금지합니다.</p>
+          <p>{t.footerNotice1}</p>
+          <p>{t.footerNotice2}</p>
         </footer>
       </div>
 

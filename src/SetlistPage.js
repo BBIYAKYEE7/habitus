@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import './SetlistPage.css';
-
-// 앨범 커버 이미지들 import
 import ipchunImg from './setlist_album/ipchun.png';
 import butterflyImg from './setlist_album/butterfly.png';
 import lostStarsImg from './setlist_album/lost_stars.png';
@@ -18,6 +16,35 @@ import sheImg from './setlist_album/she.png';
 import gobackImg from './setlist_album/goback.png';
 import untitledImg from './setlist_album/untitled.png';
 
+const pageTranslations = {
+  ko: {
+    backBtn: '공연정보 알아보기',
+    title: '🎼 2025 HABITUS 정기공연 Tracklist',
+    perfInfo: '📅 2025년 12월 3일 (화) 20:30 📍 문화스포츠관 215호',
+    ended: '공연이 종료되었습니다',
+    aSide: '🎵 A-side (7곡)',
+    bSide: '🎵 B-side (7곡)',
+    original: '원곡',
+    prev: '⬅️ 이전',
+    next: '다음 ➡️',
+    thanks: '🌟 Special Thanks',
+    thanksMsg: '모든 부원들의 열정과 노력으로 만들어진 무대입니다.<br/>많은 관심과 응원 부탁드립니다!',
+  },
+  en: {
+    backBtn: 'View Concert Info',
+    title: '🎼 2025 HABITUS Concert Tracklist',
+    perfInfo: '📅 Dec 3, 2025 (Tue) 8:30 PM 📍 Culture & Sports Hall 215',
+    ended: 'Concert has ended',
+    aSide: '🎵 A-side (7 songs)',
+    bSide: '🎵 B-side (7 songs)',
+    original: 'Original',
+    prev: '⬅️ Prev',
+    next: 'Next ➡️',
+    thanks: '🌟 Special Thanks',
+    thanksMsg: 'This stage was created through the passion and effort of all members.<br/>Thank you for your support!',
+  },
+};
+
 
 const SetlistPage = () => {
   const [selectedSide, setSelectedSide] = useState('A');
@@ -27,6 +54,8 @@ const SetlistPage = () => {
   const [slideDirection, setSlideDirection] = useState('');
   const [isSongLoading, setIsSongLoading] = useState(false);
   const [nextSide, setNextSide] = useState(null);
+  const [lang] = useState(() => localStorage.getItem('lang') || 'ko');
+  const t = pageTranslations[lang];
 
   // 공연 날짜 설정 (2025년 12월 3일 20:30)
   const concertDate = useMemo(() => new Date('2025-12-03T20:30:00+09:00'), []);
@@ -48,9 +77,9 @@ const SetlistPage = () => {
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
       }
     } else {
-      return '공연이 종료되었습니다';
+      return t.ended;
     }
-  }, [concertDate]);
+  }, [concertDate, t.ended]);
 
   // 카운트다운 타이머 설정
   useEffect(() => {
@@ -253,13 +282,11 @@ const SetlistPage = () => {
     <div className="setlist-page">
       <div className="setlist-container">
         <header className="setlist-header">
-          <Link to="/concert-info" className="back-button">공연정보 알아보기</Link>
-          <h1>🎼 2025 HABITUS 정기공연 Tracklist</h1>
-          <p className="performance-info">
-            📅 2025년 12월 3일 (화) 20:30 📍 문화스포츠관 215호
-          </p>
+          <Link to="/concert-info" className="back-button">{t.backBtn}</Link>
+          <h1>{t.title}</h1>
+          <p className="performance-info">{t.perfInfo}</p>
           <div className="countdown-container">
-            <span className={`countdown-timer ${timeLeft === '공연이 종료되었습니다' ? 'ended' : ''}`}>{timeLeft}</span>
+            <span className={`countdown-timer ${timeLeft === t.ended ? 'ended' : ''}`}>{timeLeft}</span>
           </div>
         </header>
 
@@ -270,13 +297,13 @@ const SetlistPage = () => {
               className={`side-tab ${selectedSide === 'A' ? 'active' : ''}`}
               onClick={() => handleSideChange('A')}
             >
-              🎵 A-side (7곡)
+              {t.aSide}
             </button>
             <button 
               className={`side-tab ${selectedSide === 'B' ? 'active' : ''}`}
               onClick={() => handleSideChange('B')}
             >
-              🎵 B-side (7곡)
+              {t.bSide}
             </button>
             <div className={`slide-indicator ${
               isTransitioning && nextSide === 'B' ? 'slide-right' :

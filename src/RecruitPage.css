@@ -333,71 +333,113 @@
 }
 
 .faq-item {
-  background: var(--bg);
-  border-radius: 12px;
+  background: var(--surface);
+  border-radius: 16px;
   border: 1px solid var(--border);
-  margin-bottom: 16px;
+  margin-bottom: 20px;
   overflow: hidden;
 }
 
 .faq-question {
-  padding: 16px 20px;
+  padding: 20px;
   background: var(--elevated);
-  font-weight: 600;
   display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  line-height: 1.5;
+  gap: 14px;
+  align-items: center;
 }
 
 .faq-q {
-  color: var(--accent);
+  width: 32px;
+  height: 32px;
+  background: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 700;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
+.faq-question-text {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
 .faq-answer {
-  padding: 16px 20px;
+  padding: 20px;
   display: flex;
-  gap: 10px;
+  gap: 14px;
   align-items: flex-start;
 }
 
 .faq-a {
-  color: #4ade80;
+  width: 32px;
+  height: 32px;
+  background: #4ade80;
+  color: #0b0b0b;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 700;
+  font-size: 14px;
   flex-shrink: 0;
 }
 
-.faq-answer p {
-  margin: 0 0 12px;
-  color: var(--muted);
-  line-height: 1.7;
+.faq-answer-content {
+  flex: 1;
 }
 
-.faq-answer p:last-child {
+.faq-answer-content p {
+  margin: 0 0 12px;
+  color: var(--muted);
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.faq-answer-content p:last-child {
   margin-bottom: 0;
 }
 
-.faq-highlight {
-  color: var(--accent) !important;
-  font-weight: 500;
+.faq-answer-content strong {
+  color: var(--fg);
+  font-weight: 600;
+}
+
+.faq-tip {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(226, 87, 45, 0.15), rgba(255, 107, 61, 0.08));
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
   font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+  line-height: 1.6;
 }
 
 .faq-contact {
   background: linear-gradient(135deg, rgba(226, 87, 45, 0.1), rgba(255, 107, 61, 0.05));
   border: 1px solid rgba(226, 87, 45, 0.2);
   border-radius: 12px;
-  padding: 20px;
+  padding: 24px;
   text-align: center;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .faq-contact p {
   margin: 0;
   color: var(--fg);
-  line-height: 1.7;
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.faq-contact strong {
+  color: var(--accent);
 }
 
 /* ===== Footer ===== */

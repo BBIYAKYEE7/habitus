@@ -1,9 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import posterImg from './image/poster.png';
 import './ConcertInfoPage.css';
 
+const translations = {
+  ko: {
+    title: '🎫 HABITUS 정기공연 정보',
+    backBtn: '← 홈으로',
+    setlistBtn: '셋리스트 보기',
+    poster: 'HABITUS 정기공연 포스터',
+    eventInfo: '📍 공연 정보',
+    dateLabel: '📅 공연일시',
+    dateValue: '2025년 12월 3일 (화) 20:30',
+    venueLabel: '🏢 공연장소',
+    venueValue: '문화스포츠관 215호',
+    priceLabel: '🎟️ 입장료',
+    priceValue: '무료 관람',
+    durationLabel: '⏱️ 공연시간',
+    durationValue: '약 120분 (인터미션 포함)',
+    sponsorTitle: '🤝 후원사',
+    sponsorIntro: 'HABITUS의 정기공연을 후원해주신 많은 업체분들께 진심으로 감사드립니다.',
+    contactTitle: '📞 문의사항',
+    noticeTitle: '⚠️ 공지사항',
+    notices: [
+      '공연 시작 10분 전까지 입장해 주세요.',
+      '공연 중 사진/영상 촬영은 자유롭게 가능합니다.',
+      '공연장 내에서는 정숙이 아닌 많은 환호 부탁드니다!',
+      '응급상황 시 스태프에게 즉시 알려주세요.',
+    ],
+  },
+  en: {
+    title: '🎫 HABITUS Concert Info',
+    backBtn: '← Home',
+    setlistBtn: 'View Setlist',
+    poster: 'HABITUS Concert Poster',
+    eventInfo: '📍 Event Info',
+    dateLabel: '📅 Date & Time',
+    dateValue: 'Dec 3, 2025 (Tue) 8:30 PM',
+    venueLabel: '🏢 Venue',
+    venueValue: 'Culture & Sports Hall 215',
+    priceLabel: '🎟️ Admission',
+    priceValue: 'Free',
+    durationLabel: '⏱️ Duration',
+    durationValue: 'About 120 min (incl. intermission)',
+    sponsorTitle: '🤝 Sponsors',
+    sponsorIntro: 'Special thanks to all the sponsors who supported our concert.',
+    contactTitle: '📞 Contact',
+    noticeTitle: '⚠️ Notice',
+    notices: [
+      'Please arrive at least 10 minutes before the show.',
+      'Photography and video recording are allowed.',
+      'Feel free to cheer and enjoy the performance!',
+      'In case of emergency, please contact staff immediately.',
+    ],
+  },
+};
+
 const ConcertInfoPage = () => {
+  const [lang] = useState(() => localStorage.getItem('lang') || 'ko');
+  const t = translations[lang];
+
   const sponsors = [
     { name: "블랙국밥", category: "한식", area: "조치원", link: "https://map.naver.com/p/search/%EB%B8%94%EB%9E%99%EA%B5%AD%EB%B0%A5%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90/place/2080268478?c=15.00,0,0,0,dh&isCorrectAnswer=true&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202512012334&locale=ko&svcName=map_pcv5&searchText=%EB%B8%94%EB%9E%99%EA%B5%AD%EB%B0%A5%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90" },
     { name: "달달한 밤", category: "요리주점", area: "조치원", link: "https://map.naver.com/p/search/%EB%8B%AC%EB%8B%AC%ED%95%9C%20%EB%B0%A4%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90/place/1340599744?c=15.00,0,0,0,dh&isCorrectAnswer=true&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202512012335&locale=ko&svcName=map_pcv5&searchText=%EB%8B%AC%EB%8B%AC%ED%95%9C%20%EB%B0%A4%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90" },
@@ -48,40 +104,42 @@ const ConcertInfoPage = () => {
     <div className="concert-info-page">
       <div className="concert-info-container">
         <header className="concert-info-header">
-          <Link to="/concerts" className="back-button">← 정기공연 목록</Link>
-          <h1>🎫 HABITUS 정기공연 정보</h1>
-          <Link to="/setlist" className="setlist-button">셋리스트 보기</Link>
+          <h1>{t.title}</h1>
+          <div className="header-buttons">
+            <Link to="/#concerts" className="back-button">{t.backBtn}</Link>
+            <Link to="/setlist" className="setlist-button">{t.setlistBtn}</Link>
+          </div>
         </header>
 
         <div className="concert-info-content">
           <div className="poster-section">
-            <img src={posterImg} alt="HABITUS 정기공연 포스터" className="concert-poster" />
+            <img src={posterImg} alt={t.poster} className="concert-poster" />
           </div>
 
           <div className="event-details">
-            <h2>📍 공연 정보</h2>
+            <h2>{t.eventInfo}</h2>
             <div className="detail-grid">
               <div className="detail-item">
-                <span className="detail-label">📅 공연일시</span>
-                <span className="detail-value">2025년 12월 3일 (화) 20:30</span>
+                <span className="detail-label">{t.dateLabel}</span>
+                <span className="detail-value">{t.dateValue}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">🏢 공연장소</span>
-                <span className="detail-value">문화스포츠관 215호</span>
+                <span className="detail-label">{t.venueLabel}</span>
+                <span className="detail-value">{t.venueValue}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">🎟️ 입장료</span>
-                <span className="detail-value">무료 관람</span>
+                <span className="detail-label">{t.priceLabel}</span>
+                <span className="detail-value">{t.priceValue}</span>
               </div>
               <div className="detail-item">
-                <span className="detail-label">⏱️ 공연시간</span>
-                <span className="detail-value">약 120분 (인터미션 포함)</span>
+                <span className="detail-label">{t.durationLabel}</span>
+                <span className="detail-value">{t.durationValue}</span>
               </div>
             </div>
           </div>
           <div className="sponsors-section">
-            <h2>🤝 후원사</h2>
-            <p className="sponsors-intro">HABITUS의 정기공연을 후원해주신 많은 업체분들께 진심으로 감사드립니다.</p>
+            <h2>{t.sponsorTitle}</h2>
+            <p className="sponsors-intro">{t.sponsorIntro}</p>
             <div className="sponsors-grid">
               {sponsors.map((sponsor, index) => (
                 <div 
@@ -98,21 +156,20 @@ const ConcertInfoPage = () => {
           </div>
 
           <div className="contact-section">
-            <h2>📞 문의사항</h2>
+            <h2>{t.contactTitle}</h2>
             <div className="contact-info">
-              <p>📧 이메일: habitus.kus@gmail.com</p>
-              <p>📱 인스타그램: @habitus_kus</p>
-              <p>📞 전화: 010-3103-0435</p>
+              <p>📧 {lang === 'ko' ? '이메일' : 'Email'}: habitus.kus@gmail.com</p>
+              <p>📱 {lang === 'ko' ? '인스타그램' : 'Instagram'}: @habitus_kus</p>
+              <p>📞 {lang === 'ko' ? '전화' : 'Phone'}: 010-3103-0435</p>
             </div>
           </div>
 
           <div className="notice-section">
-            <h2>⚠️ 공지사항</h2>
+            <h2>{t.noticeTitle}</h2>
             <ul className="notice-list">
-              <li>공연 시작 10분 전까지 입장해 주세요.</li>
-              <li>공연 중 사진/영상 촬영은 자유롭게 가능합니다.</li>
-              <li>공연장 내에서는 정숙이 아닌 많은 환호 부탁드니다!</li>
-              <li>응급상황 시 스태프에게 즉시 알려주세요.</li>
+              {t.notices.map((notice, i) => (
+                <li key={i}>{notice}</li>
+              ))}
             </ul>
           </div>
         </div>
