@@ -22,8 +22,6 @@ const translations = {
       badge: '모집 중',
       subtitle: '공공정책대학 밴드 동아리',
       period: '2/23 (월) ~ 3/13 (금) · 오디션 3/16~20',
-      // note: '신입 부원을 모집합니다!',
-      // recruitBtn: '모집 공고 보기',
     },
     about: {
       title: '아비투스는',
@@ -55,9 +53,6 @@ const translations = {
     footer: {
       contact: 'Contact & Social',
     },
-    popup: {
-      hint: '클릭하여 자세히 보기',
-    },
   },
   en: {
     nav: { about: 'About', sessions: 'Sessions', concerts: 'Concerts', apply: 'Apply', archive: 'Archive' },
@@ -65,8 +60,6 @@ const translations = {
       badge: 'Recruiting',
       subtitle: 'College of Public Policy Band Club',
       period: 'Feb 23 - Mar 13 · Audition Mar 16-20',
-      // note: 'We are recruiting new members!',
-      // recruitBtn: 'View Recruitment',
     },
     about: {
       title: 'About HABITUS',
@@ -98,9 +91,6 @@ const translations = {
     footer: {
       contact: 'Contact & Social',
     },
-    // popup: {
-    //   hint: 'Click to view details',
-    // },
   },
 };
 
@@ -110,7 +100,8 @@ function MainPage() {
   const snapOrder = useMemo(() => ['hero', ...sectionIds], [sectionIds]);
   const [activeId, setActiveId] = useState('about');
   const [expandedSession, setExpandedSession] = useState(null);
-  const [showRecruitPopup, setShowRecruitPopup] = useState(true);
+  // 팝업 안 뜨도록 기본 상태를 false로 지정
+  const [showRecruitPopup, setShowRecruitPopup] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lang, setLang] = useState(() => localStorage.getItem('lang') || 'ko');
   const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
@@ -120,11 +111,6 @@ function MainPage() {
   const toggleSession = (session) => {
     setExpandedSession(expandedSession === session ? null : session);
   };
-
-  // const handlePopupClick = () => {
-  //   setShowRecruitPopup(false);
-  //   navigate('/recruit');
-  // };
 
   const toggleLang = () => {
     const newLang = lang === 'ko' ? 'en' : 'ko';
@@ -155,7 +141,6 @@ function MainPage() {
           }
         });
 
-        // Re-evaluate active section by proximity to viewport top
         const all = Array.from(document.querySelectorAll('.Section'));
         const byTop = all
           .map((el) => ({ id: el.id, top: Math.abs(el.getBoundingClientRect().top) }))
@@ -174,8 +159,6 @@ function MainPage() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  // Removed custom auto-scroll handlers and dwell auto-advance
-
   const bannerUrl = bannerImg;
   const heroStyle = {
     backgroundImage: `radial-gradient(ellipse at top, rgba(11, 11, 11, 0.2) 0%, rgba(11, 11, 11, 0.6) 60%), url(${bannerUrl})`,
@@ -183,6 +166,7 @@ function MainPage() {
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
   };
+
   return (
     <div className={`SiteRoot ${theme === 'light' ? 'light-mode' : ''}`}>
       <div className="TopBar">
@@ -262,14 +246,10 @@ function MainPage() {
       </div>
 
       <header className="Hero Section Section--hero" id="hero" style={heroStyle}>
-        {/* <div className="Hero__badge Hero__badge--active">{t.hero.badge}</div> */}
         <h1 className="Hero__title">HABITUS</h1>
         <p className="Hero__subtitle">{t.hero.subtitle}</p>
         <p className="Hero__period">{t.hero.period}</p>
-        <p className="Hero__note Hero__note--active">{t.hero.note}</p>
-        {/* <Link to="/recruit" className="Hero__recruit-btn">
-          {t.hero.recruitBtn}
-        </Link> */}
+        {/* 주석 처리된 t.hero.note 제거 완료 */}
       </header>
 
       <main className="Main" role="main">
@@ -371,14 +351,6 @@ function MainPage() {
           <h2>{t.apply.title}</h2>
           <p>{t.apply.desc}</p>
           <div className="Actions">
-            {/* <a
-              className="Button Button--primary"
-              href="https://forms.gle/pKKXoF4TCYLpTJRT9"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {t.apply.formBtn}
-            </a> */}
             <a
               className="Button"
               href="https://www.instagram.com/habitus_kus?igsh=MTRhYzBleTVzNXBzOA=="
@@ -436,6 +408,7 @@ function MainPage() {
         </div>
       </footer>
 
+      {/* 팝업 컴포넌트 부분 완벽 주석 처리 */}
       {/* {showRecruitPopup && (
         <div className="Popup__overlay" onClick={() => setShowRecruitPopup(false)}>
           <div className="Popup__content" onClick={(e) => e.stopPropagation()}>
@@ -450,6 +423,5 @@ function MainPage() {
     </div>
   );
 }
-
 
 export default MainPage;
