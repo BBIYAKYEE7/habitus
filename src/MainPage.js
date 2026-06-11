@@ -7,11 +7,11 @@ import './App.css';
 
 // 세션별 멤버 데이터
 const sessionMembers = {
-  vocal: ['김하영', '윤주빈', '김동현', '변준영', '맹지은', '소형석', '최민성'],
-  guitar: ['김경렬', '김재윤', '변준영', '최민성'],
-  bass: ['김민서', '김하영', '현민아', '김도담'],
-  drum: ['고준호', '김재윤', '이서연', '소형석'],
-  keyboard: ['김하영', '김도담', '김동현','최정민', '소형석'],
+  vocal: ['윤주빈', '김동현', '변준영', '맹지은'],
+  guitar: ['김경렬', '김재윤', '변준영'],
+  bass: ['현민아', '김도담'],
+  drum: ['김재윤'],
+  keyboard: ['김도담'],
 };
 
 // 번역 데이터
@@ -22,8 +22,8 @@ const translations = {
       badge: '모집 중',
       subtitle: '공공정책대학 밴드 동아리',
       period: '2/23 (월) ~ 3/13 (금) · 오디션 3/16~20',
-      note: '신입 부원을 모집합니다!',
-      recruitBtn: '모집 공고 보기',
+      // note: '신입 부원을 모집합니다!',
+      // recruitBtn: '모집 공고 보기',
     },
     about: {
       title: '아비투스는',
@@ -65,8 +65,8 @@ const translations = {
       badge: 'Recruiting',
       subtitle: 'College of Public Policy Band Club',
       period: 'Feb 23 - Mar 13 · Audition Mar 16-20',
-      note: 'We are recruiting new members!',
-      recruitBtn: 'View Recruitment',
+      // note: 'We are recruiting new members!',
+      // recruitBtn: 'View Recruitment',
     },
     about: {
       title: 'About HABITUS',
@@ -98,9 +98,9 @@ const translations = {
     footer: {
       contact: 'Contact & Social',
     },
-    popup: {
-      hint: 'Click to view details',
-    },
+    // popup: {
+    //   hint: 'Click to view details',
+    // },
   },
 };
 
@@ -121,10 +121,10 @@ function MainPage() {
     setExpandedSession(expandedSession === session ? null : session);
   };
 
-  const handlePopupClick = () => {
-    setShowRecruitPopup(false);
-    navigate('/recruit');
-  };
+  // const handlePopupClick = () => {
+  //   setShowRecruitPopup(false);
+  //   navigate('/recruit');
+  // };
 
   const toggleLang = () => {
     const newLang = lang === 'ko' ? 'en' : 'ko';
@@ -262,14 +262,14 @@ function MainPage() {
       </div>
 
       <header className="Hero Section Section--hero" id="hero" style={heroStyle}>
-        <div className="Hero__badge Hero__badge--active">{t.hero.badge}</div>
+        {/* <div className="Hero__badge Hero__badge--active">{t.hero.badge}</div> */}
         <h1 className="Hero__title">HABITUS</h1>
         <p className="Hero__subtitle">{t.hero.subtitle}</p>
         <p className="Hero__period">{t.hero.period}</p>
         <p className="Hero__note Hero__note--active">{t.hero.note}</p>
-        <Link to="/recruit" className="Hero__recruit-btn">
+        {/* <Link to="/recruit" className="Hero__recruit-btn">
           {t.hero.recruitBtn}
-        </Link>
+        </Link> */}
       </header>
 
       <main className="Main" role="main">
@@ -371,14 +371,14 @@ function MainPage() {
           <h2>{t.apply.title}</h2>
           <p>{t.apply.desc}</p>
           <div className="Actions">
-            <a
+            {/* <a
               className="Button Button--primary"
               href="https://forms.gle/pKKXoF4TCYLpTJRT9"
               target="_blank"
               rel="noreferrer"
             >
               {t.apply.formBtn}
-            </a>
+            </a> */}
             <a
               className="Button"
               href="https://www.instagram.com/habitus_kus?igsh=MTRhYzBleTVzNXBzOA=="
@@ -436,8 +436,7 @@ function MainPage() {
         </div>
       </footer>
 
-      {/* 모집 팝업 */}
-      {showRecruitPopup && (
+      {/* {showRecruitPopup && (
         <div className="Popup__overlay" onClick={() => setShowRecruitPopup(false)}>
           <div className="Popup__content" onClick={(e) => e.stopPropagation()}>
             <button className="Popup__close" onClick={() => setShowRecruitPopup(false)}>×</button>
@@ -447,9 +446,10 @@ function MainPage() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }
+
 
 export default MainPage;
