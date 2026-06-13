@@ -16,6 +16,8 @@ const translations = {
     all: '전체',
     preparing: '준비중',
     play: '재생',
+    playFull: '전체 영상',
+    playDrum: '🥁 드럼 시점',
     noResults: '검색 결과가 없습니다',
     original: '원곡',
     footerNotice1: '⚠️ 모든 자료의 저작권은 HABITUS에 있습니다.',
@@ -34,6 +36,8 @@ const translations = {
     all: 'All',
     preparing: 'Coming Soon',
     play: 'Play',
+    playFull: 'Full Cam',
+    playDrum: '🥁 Drum Cam',
     noResults: 'No results found',
     original: 'Original',
     footerNotice1: '⚠️ All materials are copyrighted by HABITUS.',
@@ -41,8 +45,7 @@ const translations = {
   },
 };
 
-// 아카이브 데이터 구조 - YouTube 임베드 방식
-// 중첩 폴더 구조 지원: folders > subfolders > files
+// 아카이브 데이터 구조 개선 (하위 폴더를 없애고 단일 파일 리스트로 통합)
 const archiveData = {
   folders: [
     {
@@ -50,64 +53,37 @@ const archiveData = {
       name: '🎸 2025 정기공연',
       icon: '📁',
       color: '#e2572d',
-      subfolders: [
-        {
-          id: '2025-all',
-          name: '🎤 전체영상',
-          icon: '🎤',
-          color: '#e2572d',
-          files: [
-            { id: 'v1', name: '26', artist: '윤하', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v12', name: '멋진 헛간', artist: '오대천왕', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v13', name: '무제', artist: '브로큰 발렌타인', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v14', name: '입춘', artist: '한로로', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v15', name: '흰수염고래', artist: 'YB', type: 'video', youtubeId: '', disabled: true },
-          ]
-        },
-        {
-          id: '2025-drum',
-          name: '🥁 드럼 시점',
-          icon: '🥁',
-          color: '#e2572d',
-          files: [
-            { id: 'v1', name: '26', artist: '윤하', type: 'video', youtubeId: 'uNnzbRm6J2I' },
-            { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', youtubeId: 'L19YlN8dpAI' },
-            { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', youtubeId: 'cYWdqxqHrQQ' },
-            { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', youtubeId: 'zVm-MqihY50' },
-            { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: 'MHS57KkRGKc' },
-            { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: 'fjsmdd5r6F8' },
-            { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: 'TAaafu1_xQE' },
-            { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: 'lTrt0_PX8Is' },
-            { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: 'eZ1R_YIBVs0' },
-            { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: '0i6W3ySjAKE' },
-            { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v12', name: '멋진 헛간', artist: '오대천왕', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v13', name: '무제', artist: '브로큰 발렌타인', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v14', name: '입춘', artist: '한로로', type: 'video', youtubeId: '', disabled: true },
-            { id: 'v15', name: '흰수염고래', artist: 'YB', type: 'video', youtubeId: '', disabled: true },
-          ]
-        }
+      // subfolders를 없애고 바로 files를 배치함
+      files: [
+        { id: 'v1', name: '26', artist: '윤하', type: 'video', youtubeId: 'n4x_9rBl2KM'},
+        { id: 'v2', name: 'Butterfly', artist: '러브홀릭스', type: 'video', youtubeId: 'rOKc6yX9O9I'},
+        { id: 'v3', name: 'Drowning', artist: 'WOODZ', type: 'video', youtubeId: 'K5JejMSd-Rc'},
+        { id: 'v4', name: 'Free', artist: 'Ejae', type: 'video', youtubeId: 'KLnljMY8WYU'},
+        { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: 'NpN75X3JCpg'},
+        { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: 'Wq7sHcEwVBM4ULcJ'},
+        { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: '94uoV622DDU'},
+        { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: 'tE9kF-eXML0'},
+        { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: 'quL_xWjSwsI'},
+        { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: 'Ejxb3JJnWEQ'},
+        { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: 'Gngn3wuTfIo'},
+        { id: 'v12', name: '멋진 헛간', artist: '오대천왕', type: 'video', youtubeId: 'HlnVIVqZomQ'},
+        { id: 'v13', name: '무제', artist: '브로큰 발렌타인', type: 'video', youtubeId: '_vQUNg36kk8'},
+        { id: 'v14', name: '입춘', artist: '한로로', type: 'video', youtubeId: 'F8G4hwRWPjI'},
+        { id: 'v15', name: '흰수염고래', artist: 'YB', type: 'video', youtubeId: ''},
       ]
     }
   ]
 };
 
 const ArchivePage = () => {
-  const [currentPath, setCurrentPath] = useState([]); // [folderId, subfolderId]
+  const [currentPath, setCurrentPath] = useState([]); // [folderId] 형태로 축소
   const [searchQuery, setSearchQuery] = useState('');
   const [viewMode, setViewMode] = useState('grid');
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [playingVideo, setPlayingVideo] = useState(null);
+  
+  // playingVideo 상태에 어떤 버전의 비디오를 틀었는지 targetId를 함께 저장
+  const [playingVideo, setPlayingVideo] = useState(null); // { file, activeId }
+  
   const [lang] = useState(() => localStorage.getItem('lang') || 'ko');
   const t = translations[lang];
 
@@ -133,23 +109,13 @@ const ArchivePage = () => {
     }
   };
 
-  // 현재 위치에 따른 데이터
+  // 현재 위치 데이터 구조 변경 (2단계 하위 폴더 제거)
   const getCurrentData = () => {
     if (currentPath.length === 0) {
-      // 최상위: 폴더 목록
       return { type: 'folders', data: archiveData.folders };
     } else if (currentPath.length === 1) {
-      // 1단계: 하위 폴더 목록
       const folder = archiveData.folders.find(f => f.id === currentPath[0]);
-      if (folder?.subfolders) {
-        return { type: 'subfolders', data: folder.subfolders, parent: folder };
-      }
       return { type: 'files', data: folder?.files || [], parent: folder };
-    } else if (currentPath.length === 2) {
-      // 2단계: 파일 목록
-      const folder = archiveData.folders.find(f => f.id === currentPath[0]);
-      const subfolder = folder?.subfolders?.find(sf => sf.id === currentPath[1]);
-      return { type: 'files', data: subfolder?.files || [], parent: subfolder };
     }
     return { type: 'folders', data: [] };
   };
@@ -169,16 +135,13 @@ const ArchivePage = () => {
     );
   }, [currentData, searchQuery]);
 
-  // 전체 파일 수 계산
+  // 전체 파일 수 계산 수정
   const totalFiles = archiveData.folders.reduce((acc, folder) => {
-    if (folder.subfolders) {
-      return acc + folder.subfolders.reduce((subAcc, sub) => subAcc + (sub.files?.length || 0), 0);
-    }
     return acc + (folder.files?.length || 0);
   }, 0);
 
-  const handlePlayVideo = (file) => {
-    setPlayingVideo(file);
+  const handlePlayVideo = (file, youtubeId) => {
+    setPlayingVideo({ file, activeId: youtubeId });
   };
 
   const handleCloseVideo = () => {
@@ -187,23 +150,17 @@ const ArchivePage = () => {
 
   const handleFolderClick = (folderId) => {
     setPlayingVideo(null);
-    setCurrentPath([...currentPath, folderId]);
+    setCurrentPath([folderId]);
     setSearchQuery('');
   };
 
-  // 브레드크럼 경로 정보
+  // 브레드크럼 경로 정보 수정
   const getBreadcrumbs = () => {
     const crumbs = [{ id: 'home', name: t.home, path: [] }];
     
     if (currentPath.length >= 1) {
       const folder = archiveData.folders.find(f => f.id === currentPath[0]);
       if (folder) crumbs.push({ id: folder.id, name: folder.name, path: [folder.id] });
-    }
-    
-    if (currentPath.length >= 2) {
-      const folder = archiveData.folders.find(f => f.id === currentPath[0]);
-      const subfolder = folder?.subfolders?.find(sf => sf.id === currentPath[1]);
-      if (subfolder) crumbs.push({ id: subfolder.id, name: subfolder.name, path: [folder.id, subfolder.id] });
     }
     
     return crumbs;
@@ -303,7 +260,7 @@ const ArchivePage = () => {
         )}
 
         <main className={`archive-content ${viewMode}`}>
-          {currentData.type === 'folders' || currentData.type === 'subfolders' ? (
+          {currentData.type === 'folders' ? (
             <div className={`folder-grid ${viewMode}`}>
               {filteredContent.map((folder, index) => (
                 <div
@@ -322,9 +279,7 @@ const ArchivePage = () => {
                   <div className="folder-info">
                     <h3 className="folder-name">{folder.name}</h3>
                     <p className="folder-meta">
-                      {folder.subfolders 
-                        ? `${folder.subfolders.length}개 폴더` 
-                        : `${folder.files?.length || 0}개 영상`}
+                      {`${folder.files?.length || 0}개 영상`}
                     </p>
                   </div>
                   <div className="folder-arrow">→</div>
@@ -334,37 +289,65 @@ const ArchivePage = () => {
           ) : (
             <div className={`file-grid ${viewMode}`}>
               {filteredContent.length > 0 ? (
-                filteredContent.map((file, index) => (
-                  <div
-                    key={file.id}
-                    className={`file-card ${file.disabled ? 'disabled' : ''}`}
-                    onClick={() => !file.disabled && handlePlayVideo(file)}
-                    style={{ 
-                      '--file-color': getFileColor(file.type),
-                      '--delay': `${index * 0.05}s`
-                    }}
-                  >
-                    <div className="file-icon-wrapper">
-                      <span className="file-icon">{getFileIcon(file.type)}</span>
-                      {!file.disabled && (
-                        <div className="play-overlay">
-                          <span className="play-icon">▶</span>
+                filteredContent.map((file, index) => {
+                  // 둘 다 비어있으면 준비중(disabled)
+                  const isDisabled = !file.youtubeId && !file.drumYoutubeId;
+
+                  return (
+                    <div
+                      key={file.id}
+                      className={`file-card ${isDisabled ? 'disabled' : ''}`}
+                      style={{ 
+                        '--file-color': getFileColor(file.type),
+                        '--delay': `${index * 0.05}s`
+                      }}
+                    >
+                      <div className="file-icon-wrapper">
+                        <span className="file-icon">{getFileIcon(file.type)}</span>
+                      </div>
+                      <div className="file-info">
+                        <h4 className="file-name">{file.name}</h4>
+                        <div className="file-meta">
+                          <span className="file-artist">🎤 {file.artist}</span>
+                          <span className="file-type">
+                            {isDisabled ? t.preparing : file.type.toUpperCase()}
+                          </span>
                         </div>
-                      )}
-                    </div>
-                    <div className="file-info">
-                      <h4 className="file-name">{file.name}</h4>
-                      <div className="file-meta">
-                        <span className="file-artist">🎤 {file.artist}</span>
-                        <span className="file-type">{file.disabled ? t.preparing : file.type.toUpperCase()}</span>
+                      </div>
+
+                      {/* 버전에 맞게 재생 버튼 분기 처리 */}
+                      <div className="play-btn-group">
+                        {isDisabled ? (
+                          <div className="play-btn disabled">
+                            <span className="play-btn-icon">🔒</span>
+                            <span className="play-btn-text">{t.preparing}</span>
+                          </div>
+                        ) : (
+                          <>
+                            {file.youtubeId && (
+                              <button 
+                                className="play-btn version-full"
+                                onClick={() => handlePlayVideo(file, file.youtubeId)}
+                              >
+                                <span className="play-btn-icon">▶</span>
+                                <span className="play-btn-text">{t.playFull}</span>
+                              </button>
+                            )}
+                            {file.drumYoutubeId && (
+                              <button 
+                                className="play-btn version-drum"
+                                onClick={() => handlePlayVideo(file, file.drumYoutubeId)}
+                              >
+                                <span className="play-btn-icon">🥁</span>
+                                <span className="play-btn-text">{t.playDrum}</span>
+                              </button>
+                            )}
+                          </>
+                        )}
                       </div>
                     </div>
-                    <div className="play-btn">
-                      <span className="play-btn-icon">{file.disabled ? '🔒' : '▶'}</span>
-                      <span className="play-btn-text">{file.disabled ? t.preparing : t.play}</span>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <div className="empty-state">
                   <span className="empty-icon">📭</span>
@@ -387,14 +370,14 @@ const ArchivePage = () => {
           <div className="video-modal" onClick={(e) => e.stopPropagation()}>
             <button className="video-close-btn" onClick={handleCloseVideo}>✕</button>
             <div className="video-header">
-              <h3 className="video-title">{playingVideo.name}</h3>
-              <p className="video-artist">🎤 {playingVideo.artist}</p>
+              <h3 className="video-title">{playingVideo.file.name}</h3>
+              <p className="video-artist">🎤 {playingVideo.file.artist}</p>
             </div>
             <div className="video-wrapper">
               <iframe
-                key={playingVideo.id}
-                src={`https://www.youtube.com/embed/${playingVideo.youtubeId}?autoplay=1&rel=0`}
-                title={playingVideo.name}
+                key={playingVideo.activeId}
+                src={`https://www.youtube.com/embed/${playingVideo.activeId}?autoplay=1&rel=0`}
+                title={playingVideo.file.name}
                 className="video-player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
