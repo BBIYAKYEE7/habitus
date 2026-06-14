@@ -62,7 +62,7 @@ const archiveData = {
         { id: 'v5', name: 'Lost Stars', artist: 'Adam Levine', type: 'video', youtubeId: 'NpN75X3JCpg'},
         { id: 'v6', name: 'She', artist: '잔나비', type: 'video', youtubeId: 'Wq7sHcEwVBM4ULcJ'},
         { id: 'v7', name: 'T + Tik Tak Toe', artist: '실리카겔', type: 'video', youtubeId: '94uoV622DDU'},
-        { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: 'tE9kF-eXML0'},
+        { id: 'v8', name: '가을밤에 든 생각', artist: '잔나비', type: 'video', youtubeId: 'tE9kF-eXML0 '},
         { id: 'v9', name: '검을 현', artist: '이승윤', type: 'video', youtubeId: 'quL_xWjSwsI'},
         { id: 'v10', name: '고백', artist: '델리스파이스', type: 'video', youtubeId: 'Ejxb3JJnWEQ'},
         { id: 'v11', name: '난춘', artist: '새소년', type: 'video', youtubeId: 'Gngn3wuTfIo'},
