@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import posterImg from './image/poster.png';
+import poster2026 from './image/poster-2026.png';
 import { concert2026, sponsors2026 } from './winterConcert2026';
 import './ConcertInfoPage.css';
 
@@ -120,11 +121,9 @@ const ConcertInfoPage = ({ is2026 = false }) => {
         </header>
 
         <div className="concert-info-content">
-          {!is2026 && (
-            <div className="poster-section">
-              <img src={posterImg} alt={t.poster} className="concert-poster" />
-            </div>
-          )}
+          <div className="poster-section">
+            <img src={is2026 ? poster2026 : posterImg} alt={is2026 ? concert.title : t.poster} className="concert-poster" />
+          </div>
 
           <div className="event-details">
             <h2>{t.eventInfo}</h2>

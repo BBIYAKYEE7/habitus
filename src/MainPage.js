@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import bannerImg from './image/banner.png';
 import recruitImg from './image/recurit.jpg';
 import posterImg from './image/poster.png';
+import poster2026 from './image/poster-2026.png';
 import { concert2026 } from './winterConcert2026';
 import './App.css';
 
@@ -332,8 +333,8 @@ function MainPage() {
           </div>
           <div className="concerts-grid">
             <Link to={concert2026.infoPath} className="concert-card">
-              <div className="concert-poster-wrapper concert-poster-placeholder">
-                <span aria-hidden="true">🎸</span>
+              <div className="concert-poster-wrapper">
+                <img src={poster2026} alt={concert2026[lang].title} className="concert-poster-img concert-poster-img--full" />
                 <div className="concert-overlay">
                   <span>{t.concerts.viewMore}</span>
                 </div>
