@@ -619,8 +619,16 @@
   transition: transform 0.5s ease;
 }
 
+.concert-poster-img--full {
+  object-fit: contain;
+}
+
 .concert-card:hover .concert-poster-img {
   transform: scale(1.05);
+}
+
+.concert-card:hover .concert-poster-img--full {
+  transform: none;
 }
 
 .concert-overlay {
