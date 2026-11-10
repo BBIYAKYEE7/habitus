@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import posterImg from './image/poster.png';
+import { concert2026, sponsors2026 } from './winterConcert2026';
 import './ConcertInfoPage.css';
 
 const translations = {
@@ -56,11 +57,12 @@ const translations = {
   },
 };
 
-const ConcertInfoPage = () => {
+const ConcertInfoPage = ({ is2026 = false }) => {
   const [lang] = useState(() => localStorage.getItem('lang') || 'ko');
   const t = translations[lang];
 
-  const sponsors = [
+  const concert = concert2026[lang];
+  const previousSponsors = [
     { name: "블랙국밥", category: "한식", area: "조치원", link: "https://map.naver.com/p/search/%EB%B8%94%EB%9E%99%EA%B5%AD%EB%B0%A5%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90/place/2080268478?c=15.00,0,0,0,dh&isCorrectAnswer=true&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202512012334&locale=ko&svcName=map_pcv5&searchText=%EB%B8%94%EB%9E%99%EA%B5%AD%EB%B0%A5%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90" },
     { name: "달달한 밤", category: "요리주점", area: "조치원", link: "https://map.naver.com/p/search/%EB%8B%AC%EB%8B%AC%ED%95%9C%20%EB%B0%A4%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90/place/1340599744?c=15.00,0,0,0,dh&isCorrectAnswer=true&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202512012335&locale=ko&svcName=map_pcv5&searchText=%EB%8B%AC%EB%8B%AC%ED%95%9C%20%EB%B0%A4%20%EC%84%B8%EC%A2%85%EC%A1%B0%EC%B9%98%EC%9B%90" },
     { name: "CU세종고대점", category: "편의점", area: "조치원", link: "https://map.naver.com/p/search/CU%20%EC%84%B8%EC%A2%85%EA%B3%A0%EB%8C%80%EC%A0%90/place/1258943503?c=15.00,0,0,0,dh&isCorrectAnswer=true&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202512012335&locale=ko&svcName=map_pcv5&searchText=CU%20%EC%84%B8%EC%A2%85%EA%B3%A0%EB%8C%80%EC%A0%90" },
@@ -93,6 +95,12 @@ const ConcertInfoPage = () => {
     { name: "서창리181", category: "전, 빈대떡", area: "세종시", link: "https://map.naver.com/p/entry/place/1737679585?lng=127.2896264&lat=36.6095908&placePath=/home?from=map&fromPanelNum=1&additionalHeight=76&timestamp=202512020002&locale=ko&svcName=map_pcv5&entry=pll&searchType=place&c=15.00,0,0,0,dh" }
   ];
 
+  const sponsors = is2026 ? sponsors2026.map(({ name, previousName, link }) => ({
+    ...previousSponsors.find((sponsor) => sponsor.name === previousName),
+    name,
+    link,
+  })) : previousSponsors;
+
   // 링크로 리디렉션하는 함수
   const redirectToLink = (sponsor) => {
     if (sponsor.link) {
@@ -104,32 +112,34 @@ const ConcertInfoPage = () => {
     <div className="concert-info-page">
       <div className="concert-info-container">
         <header className="concert-info-header">
-          <h1>{t.title}</h1>
+          <h1>{is2026 ? `🎫 ${concert.title}` : t.title}</h1>
           <div className="header-buttons">
             <Link to="/#concerts" className="back-button">{t.backBtn}</Link>
-            <Link to="/setlist" className="setlist-button">{t.setlistBtn}</Link>
+            <Link to={is2026 ? concert2026.setlistPath : '/setlist'} className="setlist-button">{t.setlistBtn}</Link>
           </div>
         </header>
 
         <div className="concert-info-content">
-          <div className="poster-section">
-            <img src={posterImg} alt={t.poster} className="concert-poster" />
-          </div>
+          {!is2026 && (
+            <div className="poster-section">
+              <img src={posterImg} alt={t.poster} className="concert-poster" />
+            </div>
+          )}
 
           <div className="event-details">
             <h2>{t.eventInfo}</h2>
             <div className="detail-grid">
               <div className="detail-item">
                 <span className="detail-label">{t.dateLabel}</span>
-                <span className="detail-value">{t.dateValue}</span>
+                <span className="detail-value">{is2026 ? concert.date : t.dateValue}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">{t.venueLabel}</span>
-                <span className="detail-value">{t.venueValue}</span>
+                <span className="detail-value">{is2026 ? concert.venue : t.venueValue}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">{t.priceLabel}</span>
-                <span className="detail-value">{t.priceValue}</span>
+                <span className="detail-value">{is2026 && lang === 'ko' ? '무료' : t.priceValue}</span>
               </div>
               <div className="detail-item">
                 <span className="detail-label">{t.durationLabel}</span>
@@ -141,9 +151,25 @@ const ConcertInfoPage = () => {
             <h2>{t.sponsorTitle}</h2>
             <p className="sponsors-intro">{t.sponsorIntro}</p>
             <div className="sponsors-grid">
-              {sponsors.map((sponsor, index) => (
+              {sponsors.map((sponsor) => is2026 ? (
+                sponsor.link ? (
+                  <a key={sponsor.name} className="sponsor-item clickable" href={sponsor.link} target="_blank" rel="noopener noreferrer">
+                    <div className="sponsor-name">{sponsor.name}</div>
+                    <div className="sponsor-category">
+                      {sponsor.category ?? (sponsor.link.includes('/p/search/')
+                        ? (lang === 'ko' ? '네이버 지도 검색' : 'Search Naver Map')
+                        : (lang === 'ko' ? '네이버 지도' : 'Naver Map'))}
+                    </div>
+                  </a>
+                ) : (
+                  <div key={sponsor.name} className="sponsor-item">
+                    <div className="sponsor-name">{sponsor.name}</div>
+                    <div className="sponsor-category">{lang === 'ko' ? '지도 링크 확인 중' : 'Map link pending'}</div>
+                  </div>
+                )
+              ) : (
                 <div 
-                  key={index} 
+                  key={sponsor.name}
                   className="sponsor-item clickable"
                   onClick={() => redirectToLink(sponsor)}
                   title={`${sponsor.name} - ${sponsor.category} (${sponsor.area})`}
@@ -157,11 +183,19 @@ const ConcertInfoPage = () => {
 
           <div className="contact-section">
             <h2>{t.contactTitle}</h2>
-            <div className="contact-info">
-              <p>📧 {lang === 'ko' ? '이메일' : 'Email'}: habitus.kus@gmail.com</p>
-              <p>📱 {lang === 'ko' ? '인스타그램' : 'Instagram'}: @habitus_kus</p>
-              <p>📞 {lang === 'ko' ? '전화' : 'Phone'}: 010-3103-0435</p>
-            </div>
+            {is2026 ? (
+              <div className="contact-info">
+                <p>📧 {lang === 'ko' ? '이메일' : 'Email'}: <a href="mailto:habitus.kus@gmail.com">habitus.kus@gmail.com</a></p>
+                <p>📱 {lang === 'ko' ? '인스타그램' : 'Instagram'}: <a href="https://www.instagram.com/habitus_kus/" target="_blank" rel="noopener noreferrer">@habitus_kus</a></p>
+                <p>📞 {lang === 'ko' ? '전화' : 'Phone'}: <a href="tel:+821083202922">010 8320 2922</a></p>
+              </div>
+            ) : (
+              <div className="contact-info">
+                <p>📧 {lang === 'ko' ? '이메일' : 'Email'}: habitus.kus@gmail.com</p>
+                <p>📱 {lang === 'ko' ? '인스타그램' : 'Instagram'}: @habitus_kus</p>
+                <p>📞 {lang === 'ko' ? '전화' : 'Phone'}: 010-3103-0435</p>
+              </div>
+            )}
           </div>
 
           <div className="notice-section">

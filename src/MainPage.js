@@ -3,15 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import bannerImg from './image/banner.png';
 import recruitImg from './image/recurit.jpg';
 import posterImg from './image/poster.png';
+import { concert2026 } from './winterConcert2026';
 import './App.css';
 
 // 세션별 멤버 데이터
 const sessionMembers = {
-  vocal: ['윤주빈', '김동현', '변준영', '맹지은'],
-  guitar: ['김경렬', '김재윤', '변준영'],
-  bass: ['현민아', '김도담'],
-  drum: ['김재윤'],
-  keyboard: ['김도담'],
+  vocal: ['김경렬', '김범준', '윤주빈', '맹지은', '변준영'],
+  guitar: ['김경렬', '김도담', '변준영', '류희민', '박현민'],
+  bass: ['현민아', '김도담', '김구현'],
+  drum: ['김경렬', '김범준', '맹지은'],
+  keyboard: ['김도담', '윤주빈', '최정민'],
 };
 
 // 번역 데이터
@@ -21,7 +22,7 @@ const translations = {
     hero: {
       badge: '모집 중',
       subtitle: '공공정책대학 밴드 동아리',
-      period: '2/23 (월) ~ 3/13 (금) · 오디션 3/16~20',
+      period: '11월 20일 (금) · 정기공연',
     },
     about: {
       title: '아비투스는',
@@ -39,7 +40,7 @@ const translations = {
     },
     concerts: {
       title: '🎸 정기공연',
-      intro: 'HABITUS의 정기공연 기록입니다. 포스터를 클릭하면 상세 정보를 확인할 수 있습니다.',
+      intro: 'HABITUS의 정기공연 기록입니다. 공연 카드를 클릭하면 상세 정보를 확인할 수 있습니다.',
       badge: '종료',
       concertTitle: '2025 겨울 정기공연',
       viewMore: '자세히 보기',
@@ -59,7 +60,7 @@ const translations = {
     hero: {
       badge: 'Recruiting',
       subtitle: 'College of Public Policy Band Club',
-      period: 'Feb 23 - Mar 13 · Audition Mar 16-20',
+      period: 'Nov 20 (Fri) · Concert',
     },
     about: {
       title: 'About HABITUS',
@@ -77,7 +78,7 @@ const translations = {
     },
     concerts: {
       title: '🎸 Concerts',
-      intro: 'HABITUS concert archive. Click on a poster to view details.',
+      intro: 'HABITUS concert archive. Click on a concert card to view details.',
       badge: 'Ended',
       concertTitle: '2025 Winter Concert',
       viewMore: 'View Details',
@@ -330,6 +331,19 @@ function MainPage() {
             <p>{t.concerts.intro}</p>
           </div>
           <div className="concerts-grid">
+            <Link to={concert2026.infoPath} className="concert-card">
+              <div className="concert-poster-wrapper concert-poster-placeholder">
+                <span aria-hidden="true">🎸</span>
+                <div className="concert-overlay">
+                  <span>{t.concerts.viewMore}</span>
+                </div>
+              </div>
+              <div className="concert-info">
+                <h3 className="concert-title">{concert2026[lang].title}</h3>
+                <p className="concert-date">📅 {concert2026.listDate}</p>
+                <p className="concert-location">📍 {concert2026[lang].venue}</p>
+              </div>
+            </Link>
             <Link to="/concert-info" className="concert-card">
               <div className="concert-poster-wrapper">
                 <span className="concert-badge concert-badge--completed">{t.concerts.badge}</span>

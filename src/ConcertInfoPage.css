@@ -240,6 +240,7 @@
 .sponsor-item.clickable {
   cursor: pointer;
   user-select: none;
+  text-decoration: none;
 }
 
 .sponsor-item:hover {
@@ -280,6 +281,10 @@
 
 .contact-info p:last-child {
   margin-bottom: 0;
+}
+
+.contact-info a {
+  color: inherit;
 }
 
 .notice-list {

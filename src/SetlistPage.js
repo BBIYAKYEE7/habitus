@@ -15,6 +15,10 @@ import gardunsangImg from './setlist_album/gardunsang.png';
 import sheImg from './setlist_album/she.png';
 import gobackImg from './setlist_album/goback.png';
 import untitledImg from './setlist_album/untitled.png';
+import { concert2026, tracks2026 } from './winterConcert2026';
+
+const firstSide2026 = tracks2026.slice(0, 7);
+const secondSide2026 = tracks2026.slice(7);
 
 const pageTranslations = {
   ko: {
@@ -46,7 +50,7 @@ const pageTranslations = {
 };
 
 
-const SetlistPage = () => {
+const SetlistPage = ({ is2026 = false }) => {
   const [selectedSide, setSelectedSide] = useState('A');
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -57,8 +61,8 @@ const SetlistPage = () => {
   const [lang] = useState(() => localStorage.getItem('lang') || 'ko');
   const t = pageTranslations[lang];
 
-  // 공연 날짜 설정 (2025년 12월 3일 20:30)
-  const concertDate = useMemo(() => new Date('2025-12-03T20:30:00+09:00'), []);
+  const concert = concert2026[lang];
+  const concertDate = useMemo(() => new Date(is2026 ? concert2026.start : '2025-12-03T20:30:00+09:00'), [is2026]);
 
   // 카운트다운 계산 함수
   const calculateTimeLeft = useCallback(() => {
@@ -93,7 +97,7 @@ const SetlistPage = () => {
     return () => clearInterval(timer);
   }, [calculateTimeLeft]);
 
-  const setlistPart1 = [
+  const setlistPart1 = is2026 ? firstSide2026 : [
     { 
       song: "입춘", 
       artist: "한로로",
@@ -152,7 +156,7 @@ const SetlistPage = () => {
     }
   ];
 
-  const setlistPart2 = [
+  const setlistPart2 = is2026 ? secondSide2026 : [
     { 
       song: "검을 현", 
       artist: "이승윤",
@@ -199,6 +203,7 @@ const SetlistPage = () => {
 
   const currentPlaylist = selectedSide === 'A' ? setlistPart1 : setlistPart2;
   const currentSong = currentPlaylist[currentSongIndex];
+  const trackOffset = selectedSide === 'B' ? setlistPart1.length : 0;
 
 
   const handleSongSelect = (index) => {
@@ -282,9 +287,9 @@ const SetlistPage = () => {
     <div className="setlist-page">
       <div className="setlist-container">
         <header className="setlist-header">
-          <Link to="/concert-info" className="back-button">{t.backBtn}</Link>
-          <h1>{t.title}</h1>
-          <p className="performance-info">{t.perfInfo}</p>
+          <Link to={is2026 ? concert2026.infoPath : '/concert-info'} className="back-button">{t.backBtn}</Link>
+          <h1>{is2026 ? `🎼 ${concert.title} Tracklist` : t.title}</h1>
+          <p className="performance-info">{is2026 ? `📅 ${concert.date} 📍 ${concert.venue}` : t.perfInfo}</p>
           <div className="countdown-container">
             <span className={`countdown-timer ${timeLeft === t.ended ? 'ended' : ''}`}>{timeLeft}</span>
           </div>
@@ -330,10 +335,12 @@ const SetlistPage = () => {
                 </div>
                 <div className="song-info-panel">
                   <h2 className="current-song-title">{currentSong.song}</h2>
-                  <p className="current-song-artist">원곡: {currentSong.artist}</p>
-                  <p className="current-song-members">{currentSong.members}</p>
+                  {currentSong.artist && (
+                    <p className="current-song-artist">{is2026 && currentSong.artist === 'SPECIAL' ? 'SPECIAL' : `${is2026 ? t.original : '원곡'}: ${currentSong.artist}`}</p>
+                  )}
+                  {currentSong.members && <p className="current-song-members">{currentSong.members}</p>}
                   <div className="song-counter">
-                    {currentSongIndex + 1} / {currentPlaylist.length}
+                    {currentSongIndex + 1 + (is2026 ? trackOffset : 0)} / {is2026 ? tracks2026.length : currentPlaylist.length}
                   </div>
                 </div>
               </div>
@@ -358,6 +365,12 @@ const SetlistPage = () => {
             다음 ➡️
           </button>
         </div>
+
+        {is2026 && (
+          <p className="setlist-intermission">
+            07 <span aria-hidden="true">·</span> INTERMISSION <span aria-hidden="true">·</span> 08
+          </p>
+        )}
 
         {/* 곡 목록 썸네일 */}
         <div className="thumbnails-wrapper">
@@ -387,7 +400,7 @@ const SetlistPage = () => {
                     <div className="thumbnail-info">
                       <span className="thumbnail-number">{index + 1}</span>
                       <span className="thumbnail-title">{song.song}</span>
-                      <span className="thumbnail-artist">원곡: {song.artist}</span>
+                      {song.artist && <span className="thumbnail-artist">{is2026 ? t.original : '원곡'}: {song.artist}</span>}
                     </div>
                   </div>
                 </div>
@@ -413,9 +426,11 @@ const SetlistPage = () => {
               >
                 <div className="thumbnail-overlay">
                   <div className="thumbnail-info">
-                    <span className="thumbnail-number">{index + 1}</span>
+                    <span className="thumbnail-number">{index + 1 + (is2026 ? setlistPart1.length : 0)}</span>
                     <span className="thumbnail-title">{song.song}</span>
-                    <span className="thumbnail-artist">원곡: {song.artist}</span>
+                    {song.artist && (
+                      <span className="thumbnail-artist">{is2026 && song.artist === 'SPECIAL' ? 'SPECIAL' : `${is2026 ? t.original : '원곡'}: ${song.artist}`}</span>
+                    )}
                   </div>
                 </div>
               </div>
