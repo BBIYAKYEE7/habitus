@@ -437,6 +437,13 @@
 }
 .DotBtn.is-active { opacity: 1; background: var(--fg); }
 
+/* Follow the base rule so mobile visibility takes precedence. */
+@media (max-width: 768px) {
+  .SideNav {
+    display: none;
+  }
+}
+
 
 .Section {
   margin: 40px 0;

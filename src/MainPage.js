@@ -149,7 +149,8 @@ function MainPage() {
           .sort((a, b) => a.top - b.top)[0];
         if (byTop && byTop.id) setActiveId(byTop.id);
       },
-      { threshold: [0.6] }
+      // Stacked mobile cards can be taller than the viewport; observe entry/exit.
+      { threshold: 0 }
     );
 
     sections.forEach((s) => observer.observe(s));
